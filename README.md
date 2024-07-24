@@ -1,3 +1,9 @@
+## Cara Menjalankan Program
+1. Masuk ke dalam direktori folder yang akan kamu install laravel, kemudian masukkan kode program berikut untuk menginstall laravel 9 
+"composer create-project laravel/laravel:^9.0 Proyek_Tugas_Akhir"
+2. Kemudian import file database (.sql) yang sudah tersedia ke dalam phpmyadmin serta masuk ke dalam file .env dan masukkan nama tabel kalian (kalo disini presensigps nama databasenya)
+3. Jalankan Program dengan memasukkan program "php artisan serve", jangan lupa nyalakan aplikasi XAMPPnya terlebih dahulu
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
