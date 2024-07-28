@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\KonfigurasiController;
 use App\Http\Controllers\MuridController;
 use App\Http\Controllers\PresensiController;
 use Illuminate\Support\Facades\Route;
@@ -80,4 +81,8 @@ Route::middleware(['auth:user'])->group(function(){
     Route::post('/presensi/cetaklaporan',[PresensiController::class,'cetaklaporan']);
     Route::get('/presensi/rekap',[PresensiController::class,'rekap']);
     Route::post('/presensi/cetakrekap',[PresensiController::class,'cetakrekap']);
+
+    //Konfigurasi
+    Route::get('/konfigurasi/lokasikantor',[KonfigurasiController::class,'lokasikantor']);
+    Route::post('/konfigurasi/updatelokasikantor',[KonfigurasiController::class,'updatelokasikantor']);
 });
