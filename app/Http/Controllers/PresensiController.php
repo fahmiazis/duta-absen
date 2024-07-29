@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pengajuanizin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -360,5 +361,54 @@ class PresensiController extends Controller
             ->get();
 
             return view('presensi.cetakrekap', compact('bulan','tahun','namabulan','rekap'));
+    }
+
+    public function izinsakit()
+    {
+        $query = Pengajuanizin::query();
+        $query->select('id','tgl_izin','pengajuan_izin.nisn','nama_lengkap','kelas','status','status_approved','keterangan');
+        $query->join('murid','pengajuan_izin.nisn','=','murid.nisn');
+        $query->orderBy('tgl_izin','desc');
+        $izinsakit = $query->get();
+        
+        //$izinsakit = DB::table('pengajuan_izin')
+        //    ->join('murid','pengajuan_izin.nisn','=','murid.nisn')
+        //    ->orderBy('tgl_izin','desc')
+        //    ->get();
+        
+        return view('presensi.izinsakit',compact('izinsakit'));
+    }
+
+    public function approveizinsakit(Request $request)
+    {
+        $status_approved = $request->status_approved;
+        $id_izinsakit_form = $request->id_izinsakit_form;
+        $update = DB::table('pengajuan_izin')
+            ->where('id',$id_izinsakit_form)
+            ->update([
+                'status_approved' => $status_approved
+            ]);
+        
+        if($update){
+            return Redirect::back()->with(['success'=>'Data Berhasil Di Update']);
+        } else {
+            return Redirect::back()->with(['warning'=>'Data Gagal Di Update']);
+        }
+
+    }
+
+    public function batalkanizinsakit($id)
+    {
+        $update = DB::table('pengajuan_izin')
+            ->where('id',$id)
+            ->update([
+                'status_approved' => 0
+            ]);
+        
+        if($update){
+            return Redirect::back()->with(['success'=>'Data Berhasil Di Update']);
+        } else {
+            return Redirect::back()->with(['warning'=>'Data Gagal Di Update']);
+        }
     }
 }
