@@ -363,13 +363,26 @@ class PresensiController extends Controller
             return view('presensi.cetakrekap', compact('bulan','tahun','namabulan','rekap'));
     }
 
-    public function izinsakit()
+    public function izinsakit(Request $request)
     {
         $query = Pengajuanizin::query();
         $query->select('id','tgl_izin','pengajuan_izin.nisn','nama_lengkap','kelas','status','status_approved','keterangan');
         $query->join('murid','pengajuan_izin.nisn','=','murid.nisn');
+        if(!empty($request->dari) && !empty($request->sampai)){
+            $query->whereBetween('tgl_izin',[$request->dari, $request->sampai]);
+        }
+        if(!empty($request->nisn)){
+            $query->where('pengajuan_izin.nisn',$request->nisn);
+        }
+        if(!empty($request->nama_lengkap)){
+            $query->where('nama_lengkap','like','%'.$request->nama_lengkap.'%');
+        }
+        if($request->status_approved === '0' || $request->status_approved === '1' || $request->status_approved === '2'){
+            $query->where('status_approved',$request->status_approved);
+        }
         $query->orderBy('tgl_izin','desc');
-        $izinsakit = $query->get();
+        $izinsakit = $query->paginate(1);
+        $izinsakit->appends($request->all());
         
         //$izinsakit = DB::table('pengajuan_izin')
         //    ->join('murid','pengajuan_izin.nisn','=','murid.nisn')
@@ -410,5 +423,20 @@ class PresensiController extends Controller
         } else {
             return Redirect::back()->with(['warning'=>'Data Gagal Di Update']);
         }
+    }
+
+    public function cekpengajuanizin(Request $request)
+    {
+        $tgl_izin = $request->tgl_izin;
+        $nisn = Auth::guard('murid')
+            ->user()
+            ->nisn;
+
+        $cek = DB::table('pengajuan_izin')
+            ->where('nisn', $nisn)
+            ->where('tgl_izin', $tgl_izin)
+            ->count();
+
+        return $cek;
     }
 }

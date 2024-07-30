@@ -34,6 +34,7 @@ Route::middleware(['guest:murid'])->group(function() {
 });
 
 Route::middleware(['auth:murid'])->group(function () {
+    //Login & Logout
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/proseslogout', [AuthController::class,'proseslogout']);
 
@@ -53,6 +54,7 @@ Route::middleware(['auth:murid'])->group(function () {
     Route::get('/presensi/izin', [PresensiController::class, 'izin']);
     Route::get('/presensi/buatizin', [PresensiController::class, 'buatizin']);
     Route::post('/presensi/storeizin', [PresensiController::class, 'storeizin']);
+    Route::post('/presensi/cekpengajuanizin',[PresensiController::class,'cekpengajuanizin']);
 });
 
 Route::middleware(['auth:user'])->group(function(){
@@ -84,6 +86,7 @@ Route::middleware(['auth:user'])->group(function(){
     Route::get('/presensi/izinsakit',[PresensiController::class,'izinsakit']);
     Route::post('/presensi/approveizinsakit',[PresensiController::class,'approveizinsakit']);
     Route::get('/presensi/{id}/batalkanizinsakit',[PresensiController::class,'batalkanizinsakit']);
+    
 
     //Konfigurasi
     Route::get('/konfigurasi/lokasikantor',[KonfigurasiController::class,'lokasikantor']);

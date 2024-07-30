@@ -15,14 +15,14 @@
     <div class="container-xl">
         <div class="row">
             <div class="col-12">
-                <form action="#" method="post" autocomplete="off">
+                <form action="/presensi/izinsakit" method="get" autocomplete="off">
                     <div class="row">
                         <div class="col-6">
                             <div class="input-icon mb-3">
                                 <span class="input-icon-addon">
                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2z" /></svg>
                                 </span>
-                                <input type="text" value="" id="dari" class="form-control" name="dari" placeholder="Dari">
+                                <input type="text" value="{{ Request('dari') }}" id="dari" class="form-control" name="dari" placeholder="Dari">
                             </div>
                         </div>
                         <div class="col-6">
@@ -30,7 +30,7 @@
                                 <span class="input-icon-addon">
                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2z" /></svg>
                                 </span>
-                                <input type="text" value="" id="sampai" class="form-control" name="sampai" placeholder="Sampai">
+                                <input type="text" value="{{ Request('sampai') }}" id="sampai" class="form-control" name="sampai" placeholder="Sampai">
                             </div>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
                                 <span class="input-icon-addon">
                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-barcode"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v-1a2 2 0 0 1 2 -2h2" /><path d="M4 17v1a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v1" /><path d="M16 20h2a2 2 0 0 0 2 -2v-1" /><path d="M5 11h1v2h-1z" /><path d="M10 11l0 2" /><path d="M14 11h1v2h-1z" /><path d="M19 11l0 2" /></svg>
                                 </span>
-                                <input type="text" value="" id="nik" class="form-control" name="nik" placeholder="NIK">
+                                <input type="text" value="{{ Request('nisn') }}" id="nisn" class="form-control" name="nisn" placeholder="NISN">
                             </div>
                         </div>
                         <div class="col-3">
@@ -48,15 +48,16 @@
                                 <span class="input-icon-addon">
                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-users"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /><path d="M21 21v-2a4 4 0 0 0 -3 -3.85" /></svg>
                                 </span>
-                                <input type="text" value="" id="nama_murid" class="form-control" name="nama_murid" placeholder="Nama Murid">
+                                <input type="text" value="{{ Request('nama_lengkap') }}" id="nama_lengkap" class="form-control" name="nama_lengkap" placeholder="Nama Murid">
                             </div>
                         </div>
                         <div class="col-3">
                             <div class="form-group">
                                 <select name="status_approved" id="status_approved" class="form-select">
                                     <option value="">Pilih Status</option>
-                                    <option value="1">Disetujui</option>
-                                    <option value="2">Ditolak</option>
+                                    <option value="0" {{ Request('status_approved') === '0' ? 'selected' : "" }}>Pending</option>
+                                    <option value="1" {{ Request('status_approved') == 1 ? 'selected' : "" }}>Disetujui</option>
+                                    <option value="2" {{ Request('status_approved') == 2 ? 'selected' : "" }}>Ditolak</option>
                                 </select>
                             </div>
                         </div>
@@ -123,6 +124,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{ $izinsakit->links('vendor.pagination.bootstrap-5') }}
             </div>
         </div>
     </div>
