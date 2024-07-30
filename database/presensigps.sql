@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 24 Jul 2024 pada 17.50
+-- Waktu pembuatan: 30 Jul 2024 pada 05.47
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -39,6 +39,25 @@ CREATE TABLE `jurusan` (
 INSERT INTO `jurusan` (`kode_jurusan`, `nama_jurusan`) VALUES
 ('TKJ', 'Teknik Komputer dan Jaringan'),
 ('TSM', 'Teknik Sepeda Motor');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `konfigurasi_lokasi`
+--
+
+CREATE TABLE `konfigurasi_lokasi` (
+  `id` int(11) NOT NULL,
+  `lokasi_kantor` varchar(255) DEFAULT NULL,
+  `radius` smallint(6) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data untuk tabel `konfigurasi_lokasi`
+--
+
+INSERT INTO `konfigurasi_lokasi` (`id`, `lokasi_kantor`, `radius`) VALUES
+(1, '-5.73632746239753,105.59125199541869', 40);
 
 -- --------------------------------------------------------
 
@@ -98,7 +117,10 @@ CREATE TABLE `pengajuan_izin` (
 --
 
 INSERT INTO `pengajuan_izin` (`id`, `nisn`, `tgl_izin`, `status`, `keterangan`, `status_approved`) VALUES
-(1, '12345', '2024-07-25', 's', 'Beol', '1');
+(1, '12345', '2024-07-25', 's', 'Beol', '1'),
+(2, '12345', '2024-07-30', 'i', 'Mau keluar negeri', '2'),
+(3, '12346', '2024-07-31', 'i', 'Mau Liburan', '0'),
+(4, '12345', '2024-07-31', 'i', 'Lalala', NULL);
 
 -- --------------------------------------------------------
 
@@ -123,7 +145,8 @@ CREATE TABLE `presensi` (
 --
 
 INSERT INTO `presensi` (`id`, `nisn`, `tgl_presensi`, `jam_in`, `jam_out`, `foto_in`, `foto_out`, `lokasi_in`, `lokasi_out`) VALUES
-(1, '12345', '2024-07-24', '14:19:12', '14:20:12', '12345-2024-07-24-in.png', '12345-2024-07-24-out.png', '-6.1944491,106.8229198', '-6.1944491,106.8229198');
+(1, '12345', '2024-07-24', '14:19:12', '14:20:12', '12345-2024-07-24-in.png', '12345-2024-07-24-out.png', '-6.1944491,106.8229198', '-6.1944491,106.8229198'),
+(2, '12345', '2024-07-28', '12:32:56', '12:34:25', '12345-2024-07-28-in.png', '12345-2024-07-28-out.png', '-6.1944491,106.8229198', '-6.1944491,106.8229198');
 
 -- --------------------------------------------------------
 
@@ -158,6 +181,12 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 --
 ALTER TABLE `jurusan`
   ADD PRIMARY KEY (`kode_jurusan`);
+
+--
+-- Indeks untuk tabel `konfigurasi_lokasi`
+--
+ALTER TABLE `konfigurasi_lokasi`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `migrations`
@@ -195,6 +224,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT untuk tabel `konfigurasi_lokasi`
+--
+ALTER TABLE `konfigurasi_lokasi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT untuk tabel `migrations`
 --
 ALTER TABLE `migrations`
@@ -204,13 +239,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT untuk tabel `pengajuan_izin`
 --
 ALTER TABLE `pengajuan_izin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `presensi`
 --
 ALTER TABLE `presensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
