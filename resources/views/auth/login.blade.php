@@ -31,7 +31,7 @@
 
         <div class="login-form mt-1">
             <div class="section">
-                <img src="{{ asset ('assets/img/login/login.jpg') }}" alt="image" class="form-image">
+                <img src="{{ asset ('assets/img/login/smkn2kld.png') }}" alt="image" class="form-image">
             </div>
             <div class="section mt-1">
                 <h1>Presensi</h1>
