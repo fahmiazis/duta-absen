@@ -34,7 +34,7 @@
                 <img src="{{ asset ('assets/img/login/smkn2kld.png') }}" alt="image" class="form-image">
             </div>
             <div class="section mt-1">
-                <h1>Presensi</h1>
+                <h1>Aplikasi Absen Murid SMK Negeri 2 Kalianda</h1>
                 <h4>Silahkan Login</h4>
             </div>
             <div class="section mt-1 mb-5">

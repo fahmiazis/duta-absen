@@ -9,7 +9,9 @@
                         @php
                             $path = Storage::url('uploads/murid/'.Auth::guard('murid')->user()->foto);
                         @endphp
-                        <img src="{{ url($path) }}" alt="avatar" class="imaged w64" style="height:60px">
+                        <!--php artisan storage:link -> Jalankan Apabila Gambar Tidak Muncul-->
+                        <img src="{{ url($path) }}" alt="avatar" class="imaged w64 rounded">
+                        <!--<img src="assets/img/sample/avatar/12345.png" alt="avatar" class="imaged w64 rounded">-->
                     @else
                         <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
                     @endif
