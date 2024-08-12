@@ -439,4 +439,9 @@ class PresensiController extends Controller
 
         return $cek;
     }
+
+    public function poin()
+    {
+        return view('presensi.poin');
+    }
 }

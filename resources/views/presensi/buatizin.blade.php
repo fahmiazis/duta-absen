@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
 <style>
     .datepicker-modal{
-        max-height: 430px !important; 
+        max-height: 430px !important;
     }
 
     .datepicker-date-display{
@@ -13,7 +13,7 @@
 <!--- App Header -->
 <div class="appHeader bg-primary text-light">
     <div class="left">
-        <a href="" class="headerButton goBack">
+        <a href="/presensi/izin" class="headerButton goBack">
             <ion-icon name="chevron-back-outline"></ion-icon>
         </a>
     </div>
