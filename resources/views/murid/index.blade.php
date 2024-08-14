@@ -130,6 +130,8 @@
         </div>
     </div>
 </div>
+
+{{-- Modal Input Murid --}}
 <div class="modal modal-blur fade" id="modal-inputmurid" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">

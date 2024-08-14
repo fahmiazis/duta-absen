@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KonfigurasiController;
 use App\Http\Controllers\MuridController;
+use App\Http\Controllers\PoinController;
 use App\Http\Controllers\PresensiController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,7 +45,7 @@ Route::middleware(['auth:murid'])->group(function () {
 
     // Edit Profile
     Route::get('/editprofile',[PresensiController::class, 'editprofile']);
-    Route::post('/presensi/{nik}/updateprofile',[PresensiController::class, 'updateprofile']);
+    Route::post('/presensi/{nisn}/updateprofile',[PresensiController::class, 'updateprofile']);
 
     //Histori
     Route::get('/presensi/histori', [PresensiController::class, 'histori']);
@@ -65,8 +66,8 @@ Route::middleware(['auth:user'])->group(function(){
     Route::get('/murid',[MuridController::class,'index']);
     Route::post('/murid/store',[MuridController::class,'store']);
     Route::post('/murid/edit',[MuridController::class,'edit']);
-    Route::post('/murid/{nik}/update',[MuridController::class,'update']);
-    Route::post('/murid/{nik}/delete',[MuridController::class,'delete']);
+    Route::post('/murid/{nisn}/update',[MuridController::class,'update']);
+    Route::post('/murid/{nisn}/delete',[MuridController::class,'delete']);
 
     //Jurusan
     Route::get('/jurusan',[JurusanController::class,'index']);
@@ -86,8 +87,10 @@ Route::middleware(['auth:user'])->group(function(){
     Route::get('/presensi/izinsakit',[PresensiController::class,'izinsakit']);
     Route::post('/presensi/approveizinsakit',[PresensiController::class,'approveizinsakit']);
     Route::get('/presensi/{id}/batalkanizinsakit',[PresensiController::class,'batalkanizinsakit']);
-    Route::get('/presensi/poin',[PresensiController::class,'poin']);
-    
+
+    //Poin Pelanggaran
+    Route::get('/poin/poin',[PoinController::class,'poin']);
+    Route::get('/poin/{nisn}/riwayatpelanggaran',[PoinController::class,'riwayatpelanggaran']);
 
     //Konfigurasi
     Route::get('/konfigurasi/lokasikantor',[KonfigurasiController::class,'lokasikantor']);
