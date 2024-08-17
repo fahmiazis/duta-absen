@@ -89,8 +89,12 @@ Route::middleware(['auth:user'])->group(function(){
     Route::get('/presensi/{id}/batalkanizinsakit',[PresensiController::class,'batalkanizinsakit']);
 
     //Poin Pelanggaran
+    Route::get('/poin',[PoinController::class,'index']);
     Route::get('/poin/poin',[PoinController::class,'poin']);
     Route::get('/poin/{nisn}/riwayatpelanggaran',[PoinController::class,'riwayatpelanggaran']);
+    Route::post('/poin/store',[PoinController::class,'store']);
+    Route::post('/poin/{nisn}/editpoin/{id_riwayat}',[PoinController::class,'editpoin']);
+    Route::post('/poin/{nisn}/updatepoin/{id_riwayat}',[PoinController::class,'updatepoin']);
 
     //Konfigurasi
     Route::get('/konfigurasi/lokasikantor',[KonfigurasiController::class,'lokasikantor']);
