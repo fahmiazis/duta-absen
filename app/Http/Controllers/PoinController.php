@@ -127,4 +127,14 @@ class PoinController extends Controller
         }
     }
 
+    public function delete($id_riwayat)
+    {
+        $delete = DB::table('riwayat_pelanggaran')->where('id_riwayat', $id_riwayat)->delete();
+        if($delete){
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Berhasil Dihapus']);
+        }
+    }
+
 }

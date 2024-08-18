@@ -95,6 +95,7 @@ Route::middleware(['auth:user'])->group(function(){
     Route::post('/poin/store',[PoinController::class,'store']);
     Route::post('/poin/{nisn}/editpoin/{id_riwayat}',[PoinController::class,'editpoin']);
     Route::post('/poin/{nisn}/updatepoin/{id_riwayat}',[PoinController::class,'updatepoin']);
+    Route::post('/poin/{id_riwayat}/delete',[PoinController::class,'delete']);
 
     //Konfigurasi
     Route::get('/konfigurasi/lokasikantor',[KonfigurasiController::class,'lokasikantor']);
