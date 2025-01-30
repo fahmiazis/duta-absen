@@ -16,7 +16,7 @@ class AuthController extends Controller
             return redirect('/panel')->with(['warning' => 'Email atau Password Salah!']);
         }
     }
-    
+
     public function proseslogin(Request $request)
     {
         //$credentials = $request->only('nisn', 'password');
@@ -31,6 +31,21 @@ class AuthController extends Controller
             return redirect('/')->with(['warning' => 'NISN / Password Salah!']);
         }
     }
+
+    // public function proseslogin(Request $request)
+    // {
+    //     // Cari user berdasarkan email
+    //     $user = \App\Models\Murid::where('nisn', $request->nisn)->first();
+
+    //     // Jika user ditemukan, login tanpa password
+    //     if ($user) {
+    //         Auth::login($user);  // Login langsung tanpa password
+    //         return redirect('/dashboard');
+    //     } else {
+    //         return redirect('/')->with(['warning' => 'NISN / Password Salah!']);
+    //     }
+
+    // }
 
     public function proseslogout()
     {

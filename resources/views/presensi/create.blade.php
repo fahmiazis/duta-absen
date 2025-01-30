@@ -20,8 +20,8 @@
         height: auto !important;
         border-radius: 15px;
     }
-    #map { 
-        height: 200px; 
+    #map {
+        height: 300px;
     }
  </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -35,26 +35,29 @@
         <div class="webcam-capture"></div>
     </div>
 </div>
+
+<div class="row mt-2 mb-4">
+    <div class="col">
+        <div id="map"></div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col">
         @if ($cek > 0)
         <button id="takeabsen" class="btn btn-danger btn-block">
-            <ion-icon name="camera-outline"></ion-icon>    
+            <!-- <ion-icon name="camera-outline"></ion-icon> -->
             Absen Pulang
         </button>
         @else
-        <button id="takeabsen" class="btn btn-primary btn-block">
-            <ion-icon name="camera-outline"></ion-icon>    
+        <button id="takeabsen" class="btn btn-primary btn-block" >
+            <!-- <ion-icon name="camera-outline"></ion-icon> -->
             Absen Masuk
         </button>
         @endif
     </div>
 </div>
-<div class="row mt-2">
-    <div class="col">
-        <div id="map"></div>
-    </div>
-</div>
+
 
 <audio id="notifikasi_in">
     <source src="{{ asset('assets/sound/notifikasi_in.mp3') }}" type="audio/mpeg">
@@ -73,14 +76,14 @@
     var notifikasi_in = document.getElementById('notifikasi_in');
     var notifikasi_out = document.getElementById('notifikasi_out');
     var radius_sound = document.getElementById('radius_sound');
-    Webcam.set({
-        height:480,
-        widht:640,
-        image_format:'jpeg',
-        jpeg_quality:80
-    });
+    // Webcam.set({
+    //     height:480,
+    //     widht:640,
+    //     image_format:'jpeg',
+    //     jpeg_quality:80
+    // });
 
-    Webcam.attach('.webcam-capture');
+    // Webcam.attach('.webcam-capture');
 
     var lokasi = document.getElementById('lokasi');
     if(navigator.geolocation){
@@ -118,47 +121,50 @@
     }
 
     $("#takeabsen").click(function(e) {
-        Webcam.snap(function(uri){
-            image = uri;
-        });
-
+        // Webcam.snap(function(uri){
+        //     image = uri;
+        // });
+        const name = "{{ Auth::guard('murid')->user()->nama_lengkap }}"
+        const nisn = "{{ Auth::guard('murid')->user()->nisn }}"
+        const photo = "{{ Auth::guard('murid')->user()->foto }}"
         var lokasi = $('#lokasi').val();
-        $.ajax({
-            type:'POST',
-            url:'/presensi/store',
-            data:{
-                _token:"{{ csrf_token() }}",
-                image:image,
-                lokasi:lokasi
-            },
-            cache:false,
-            success:function(respond){
-                var status = respond.split("|");
-                if(status[0] == "success"){
-                    if(status[2] =="in"){
-                        notifikasi_in.play();
-                    } else {
-                        notifikasi_out.play();
-                    }
-                    Swal.fire({
-                      title: 'Berhasil !',
-                      text: status[1],
-                      icon: 'success'
-                    })
-                    setTimeout("location.href='/dashboard'", 3000);
-                } else {
-                    if(status[2] == 'radius') {
-                        radius_sound.play();
-                    }
-                    Swal.fire({
-                      title: 'Error !',
-                      text: status[1],
-                      icon: 'error'
-                    })
-                    setTimeout("location.href='/dashboard'", 3000);
-                }
-            }
-        });
+        window.location.href=`http://localhost:9000?name=${encodeURIComponent(name)}&nisn=${encodeURIComponent(nisn)}&photo=${photo}`
+        // $.ajax({
+        //     type:'POST',
+        //     url:'/presensi/store',
+        //     data:{
+        //         _token:"{{ csrf_token() }}",
+        //         // image:image,
+        //         lokasi:lokasi
+        //     },
+        //     cache:false,
+        //     success:function(respond){
+        //         var status = respond.split("|");
+        //         if(status[0] == "success"){
+        //             if(status[2] =="in"){
+        //                 notifikasi_in.play();
+        //             } else {
+        //                 notifikasi_out.play();
+        //             }
+        //             Swal.fire({
+        //               title: 'Berhasil !',
+        //               text: status[1],
+        //               icon: 'success'
+        //             })
+        //             setTimeout("location.href='/dashboard'", 3000);
+        //         } else {
+        //             if(status[2] == 'radius') {
+        //                 radius_sound.play();
+        //             }
+        //             Swal.fire({
+        //               title: 'Error !',
+        //               text: status[1],
+        //               icon: 'error'
+        //             })
+        //             setTimeout("location.href='/dashboard'", 3000);
+        //         }
+        //     }
+        // });
     });
 </script>
 @endpush
