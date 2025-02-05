@@ -8,6 +8,7 @@ use App\Http\Controllers\MuridController;
 use App\Http\Controllers\PoinController;
 use App\Http\Controllers\PresensiController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GambarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,7 @@ Route::middleware(['auth:murid'])->group(function () {
 
     //Presensi
     Route::get('/presensi/create', [PresensiController::class,'create']);
+    Route::get('/gambar/{filename}', [GambarController::class, 'show']);
     Route::post('/presensi/store', [PresensiController::class, 'store']);
 
     // Edit Profile
