@@ -1,6 +1,7 @@
 @extends('layouts.presensi')
 @section('content')
 <!-- App Capsule -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div id="appCapsule">
         <div class="section" id="user-section">
             <div id="user-detail">
@@ -231,3 +232,58 @@
     </div>
     <!-- * App Capsule -->
 @endsection
+
+<!-- @push('myscript')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const nisn = urlParams.get('nisn')
+        const absen = urlParams.get('absen')
+        const lokasi = urlParams.get('lokasi')
+
+        const trueNisn = "{{ Auth::guard('murid')->user()->nisn }}"
+
+        console.log(trueNisn === nisn)
+        console.log(absen === 'true')
+        if (absen === 'true' && nisn === trueNisn) {
+            // console.log('harusnya running ajax')
+            $.ajax({
+                type:'POST',
+                url:'/presensi/store',
+                data:{
+                    _token:"{{ csrf_token() }}",
+                    // image:image,
+                    lokasi:lokasi
+                },
+                cache:false,
+                success:function(respond){
+                    var status = respond.split("|");
+                    if(status[0] == "success"){
+                        if(status[2] =="in"){
+                            notifikasi_in.play();
+                        } else {
+                            notifikasi_out.play();
+                        }
+                        Swal.fire({
+                            title: 'Berhasil !',
+                            text: status[1],
+                            icon: 'success'
+                        })
+                        setTimeout("location.href='/dashboard'", 3000);
+                    } else {
+                        if(status[2] == 'radius') {
+                            radius_sound.play();
+                        }
+                        Swal.fire({
+                            title: 'Error !',
+                            text: status[1],
+                            icon: 'error'
+                        })
+                        setTimeout("location.href='/dashboard'", 3000);
+                    }
+                }
+            });
+        }
+    });
+
+</script> -->

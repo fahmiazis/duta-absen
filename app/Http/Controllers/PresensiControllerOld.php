@@ -38,41 +38,39 @@ class PresensiController extends Controller
         $lokasiuser = explode(',', $lokasi);
         $latitudeuser = $lokasiuser[0];
         $longitudeuser = $lokasiuser[1];
-
+        
 
         $jarak = $this->distance($latitudekantor, $longitudekantor, $latitudeuser, $longitudeuser);
         $radius = round($jarak["meters"]);
         //dd($radius);
-
+        
         $cek = DB::table('presensi')->where('tgl_presensi', $tgl_presensi)->where('nisn', $nisn)->count();
-
+        
         if($cek > 0) {
             $ket = "out";
         } else {
             $ket = "in";
         }
-        // $image = $request->image;
-        // $folderpath = "public/uploads/absensi/";
-        // $formatName = $nisn."-".$tgl_presensi . "-" . $ket;
-        // $image_parts = explode(";base64",$image);
-        // $image_base64 = base64_decode($image_parts[1]);
-        // $fileName = $formatName . ".png";
-        // $file = $folderpath . $fileName;
-
-        // if($radius > $lok_kantor->radius) {
-        if($radius > 500000000000000000000000) {
+        $image = $request->image;
+        $folderpath = "public/uploads/absensi/";
+        $formatName = $nisn."-".$tgl_presensi . "-" . $ket;
+        $image_parts = explode(";base64",$image);
+        $image_base64 = base64_decode($image_parts[1]);
+        $fileName = $formatName . ".png";
+        $file = $folderpath . $fileName;
+        if($radius > $lok_kantor->radius) {
             echo "error|Maaf Anda berada di luar radius, jarak anda" . $radius ." meter dari sekolah.|";
         } else {
             if($cek > 0){
                 $data_pulang = [
                     'jam_out' => $jam,
-                    // 'foto_out' => $fileName,
+                    'foto_out' => $fileName,
                     'lokasi_out' => $lokasi
                 ];
                 $update = DB::table('presensi')->where('tgl_presensi', $tgl_presensi)->where('nisn', $nisn)->update($data_pulang);
                 if($update){
                     echo "success|Terimakasi, Hati Hati Di Jalan Pulang|out";
-                    // Storage::put($file,$image_base64);
+                    Storage::put($file,$image_base64);
                 } else {
                     echo "error|Maaf Gagal Absen, Hubungi Petugas IT Sekolah|out";
                 }
@@ -81,17 +79,17 @@ class PresensiController extends Controller
                     'nisn' => $nisn,
                     'tgl_presensi' => $tgl_presensi,
                     'jam_in' => $jam,
-                    // 'foto_in' => $fileName,
+                    'foto_in' => $fileName,
                     'lokasi_in' => $lokasi
                 ];
                 $simpan = DB::table('presensi')->insert($data);
                 if($simpan){
                     echo "success|Terimakasi, Selamat Belajar Di Kelas|in";
-                    // Storage::put($file,$image_base64);
+                    Storage::put($file,$image_base64);
                 } else {
                     echo "error|Maaf Gagal Absen, Hubungi Petugas IT Sekolah|in";
                 }
-            }
+            }   
         }
     }
 
@@ -115,11 +113,11 @@ class PresensiController extends Controller
         $nisn = Auth::guard('murid')
             ->user()
             ->nisn;
-
+        
         $murid = DB::table('murid')
             ->where('nisn', $nisn)
             ->first();
-
+        
         return view('presensi.editprofile', compact('murid'));
     }
 
@@ -128,52 +126,52 @@ class PresensiController extends Controller
         $nisn = Auth::guard('murid')
             ->user()
             ->nisn;
-
+        
         $nama_lengkap = $request
             ->nama_lengkap;
-
+        
         $no_hp = $request
             ->no_hp;
-
+        
         $password = Hash::make($request->password);
         $murid = DB::table('murid')
             ->where('nisn', $nisn)
             ->first();
 
-        // if($request->hasFile('foto')){
-        //     $foto = $nisn.".".$request
-        //         ->file('foto')
-        //         ->getClientOriginalExtension();
-        // } else {
-        //     $foto = $murid->foto;
-        // }
-
+        if($request->hasFile('foto')){
+            $foto = $nisn.".".$request
+                ->file('foto')
+                ->getClientOriginalExtension();
+        } else {
+            $foto = $murid->foto;
+        }
+        
         if (empty($request->password)) {
             $data = [
                 'nama_lengkap' => $nama_lengkap,
-                'no_hp' => $no_hp
-                // 'foto' => $foto
+                'no_hp' => $no_hp,
+                'foto' => $foto
             ];
         } else {
             $data = [
                 'nama_lengkap' => $nama_lengkap,
                 'no_hp' => $no_hp,
-                'password' => $password
-                // 'foto' => $foto
+                'password' => $password,
+                'foto' => $foto
             ];
         }
-
+        
         $update = DB::table('murid')
             ->where('nisn', $nisn)
             ->update($data);
-
+        
         if($update){
-            // if($request->hasFile('foto')){
-            //     $folderpath = "public/uploads/murid/";
-            //     $request
-            //         ->file('foto')
-            //         ->storeAs($folderpath, $foto);
-            // }
+            if($request->hasFile('foto')){
+                $folderpath = "public/uploads/murid/";
+                $request
+                    ->file('foto')
+                    ->storeAs($folderpath, $foto);
+            }
             return Redirect::back()
                 ->with(['success' => 'Data Berhasil Di Update']);
         }else{
@@ -264,7 +262,7 @@ class PresensiController extends Controller
             ->join('jurusan','murid.kode_jurusan','=','jurusan.kode_jurusan')
             ->where('tgl_presensi',$tanggal)
             ->get();
-
+        
         return view('presensi.getpresensi', compact('presensi'));
     }
 
@@ -275,7 +273,7 @@ class PresensiController extends Controller
             ->join('murid','presensi.nisn','=','murid.nisn')
             ->where('id', $id)
             ->first();
-
+        
         return view('presensi.showmap', compact('presensi'));
     }
 
@@ -385,12 +383,12 @@ class PresensiController extends Controller
         $query->orderBy('tgl_izin','desc');
         $izinsakit = $query->paginate(1);
         $izinsakit->appends($request->all());
-
+        
         //$izinsakit = DB::table('pengajuan_izin')
         //    ->join('murid','pengajuan_izin.nisn','=','murid.nisn')
         //    ->orderBy('tgl_izin','desc')
         //    ->get();
-
+        
         return view('presensi.izinsakit',compact('izinsakit'));
     }
 
@@ -403,7 +401,7 @@ class PresensiController extends Controller
             ->update([
                 'status_approved' => $status_approved
             ]);
-
+        
         if($update){
             return Redirect::back()->with(['success'=>'Data Berhasil Di Update']);
         } else {
@@ -419,7 +417,7 @@ class PresensiController extends Controller
             ->update([
                 'status_approved' => 0
             ]);
-
+        
         if($update){
             return Redirect::back()->with(['success'=>'Data Berhasil Di Update']);
         } else {

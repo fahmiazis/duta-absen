@@ -31,7 +31,7 @@
 <!-- App Capsule -->
 <div class="row" style="margin-top: 70px;">
     <div class="col">
-        <input type="text" id="lokasi">
+        <input type="text" id="lokasi" disabled>
         <div class="webcam-capture"></div>
     </div>
 </div>
@@ -128,7 +128,7 @@
         const nisn = "{{ Auth::guard('murid')->user()->nisn }}"
         const photo = "{{ Auth::guard('murid')->user()->foto }}"
         var lokasi = $('#lokasi').val();
-        window.location.href=`http://localhost:9000?name=${encodeURIComponent(name)}&nisn=${encodeURIComponent(nisn)}&photo=${photo}`
+        window.location.href=`http://localhost:9000?name=${encodeURIComponent(name)}&nisn=${encodeURIComponent(nisn)}&photo=${photo}&lokasi=${lokasi}`
         // $.ajax({
         //     type:'POST',
         //     url:'/presensi/store',
@@ -165,6 +165,57 @@
         //         }
         //     }
         // });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const nisn = urlParams.get('nisn')
+        const absen = urlParams.get('absen')
+        const lokasi = urlParams.get('lokasi')
+
+        const trueNisn = "{{ Auth::guard('murid')->user()->nisn }}"
+
+        console.log(trueNisn === nisn)
+        console.log(absen === 'true')
+        if (absen === 'true' && nisn === trueNisn) {
+            // console.log('harusnya running ajax')
+            $.ajax({
+                type:'POST',
+                url:'/presensi/store',
+                data:{
+                    _token:"{{ csrf_token() }}",
+                    // image:image,
+                    lokasi:lokasi
+                },
+                cache:false,
+                success:function(respond){
+                    var status = respond.split("|");
+                    if(status[0] == "success"){
+                        if(status[2] =="in"){
+                            notifikasi_in.play();
+                        } else {
+                            notifikasi_out.play();
+                        }
+                        Swal.fire({
+                            title: 'Berhasil !',
+                            text: status[1],
+                            icon: 'success'
+                        })
+                        setTimeout("location.href='/dashboard'", 3000);
+                    } else {
+                        if(status[2] == 'radius') {
+                            radius_sound.play();
+                        }
+                        Swal.fire({
+                            title: 'Error !',
+                            text: status[1],
+                            icon: 'error'
+                        })
+                        setTimeout("location.href='/dashboard'", 3000);
+                    }
+                }
+            });
+        }
     });
 </script>
 @endpush
