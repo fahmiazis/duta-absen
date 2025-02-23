@@ -17,6 +17,13 @@ class DashboardController extends Controller
             ->user()
             ->nisn;
 
+        $murid = DB::table('murid')
+            ->join('jurusan', 'murid.kode_jurusan', '=', 'jurusan.kode_jurusan')
+            ->select('murid.*', 'jurusan.nama_jurusan')
+            ->where('murid.nisn', $nisn)
+            ->first();
+        
+
         $presensihariini = DB::table('presensi')
             ->where('nisn', $nisn)
             ->where('tgl_presensi',$hariini)
@@ -51,7 +58,7 @@ class DashboardController extends Controller
             ->whereRaw('YEAR(tgl_izin)="'. $tahunini . '"')
             ->where('status_approved', 1)
             ->first();
-        return view('dashboard.dashboard', compact('presensihariini','historibulanini','namabulan','bulanini','tahunini','rekappresensi','leaderboard','rekapizin'));
+        return view('dashboard.dashboard', compact('presensihariini','historibulanini','namabulan','bulanini','tahunini','rekappresensi','leaderboard','rekapizin', 'murid'));
     }
 
     public function dashboardadmin()

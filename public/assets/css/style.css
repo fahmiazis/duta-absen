@@ -7997,7 +7997,8 @@ body.dark-mode-active .cart-item .cart-item-footer {
 #user-section {
   height: 180px;
   background-color: #092c9f;
-  padding: 20px;
+  padding: 15px;
+  /*margin: 20px 0px 0px;*/
 }
 
 #user-detail {

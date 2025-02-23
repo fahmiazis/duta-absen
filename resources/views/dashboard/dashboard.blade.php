@@ -11,16 +11,20 @@
                             $path = Storage::url('uploads/murid/'.Auth::guard('murid')->user()->foto);
                         @endphp
                         <!--php artisan storage:link -> Jalankan Apabila Gambar Tidak Muncul-->
-                        <img src="{{ url($path) }}" alt="avatar" class="imaged w64 rounded">
+                        <!--php artisan storage:link -> Jalankan Apabila Gambar Tidak Muncul-->
+                        <img src="{{ url($path) }}" alt="avatar" class="imaged" style="width: 2cm; height: 2cm; object-fit: cover;">
                         <!--<img src="assets/img/sample/avatar/12345.png" alt="avatar" class="imaged w64 rounded">-->
                     @else
                         <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
                     @endif
                 </div>
                 <div id="user-info">
-                    <h2 id="user-name">{{ Auth::guard('murid')->user()->nama_lengkap }}</h2>
-                    <span id="user-role">{{ Auth::guard('murid')->user()->kelas }}</span>
+                    <h3 id="user-name">{{ $murid->nama_lengkap }}</h3>
+                    <h4 id="user-name">{{ $murid->kelas }}</h4>
+                    <!--<span id="user-role">{{ $murid->kelas }}</span>-->
+                    <span id="user-role">{{ $murid->nama_jurusan ?? 'Jurusan Tidak Ditemukan' }}</span>
                 </div>
+
             </div>
         </div>
 
@@ -79,6 +83,7 @@
                         <div class="card gradasigreen">
                             <div class="card-body">
                                 <div class="presencecontent">
+                                    <!--
                                     <div class="iconpresence">
                                         @if ($presensihariini != null)
                                         @php
@@ -89,8 +94,9 @@
                                         <ion-icon name="camera"></ion-icon>
                                         @endif
                                     </div>
+                                    -->
                                     <div class="presencedetail">
-                                        <h4 class="presencetitle">Masuk</h4>
+                                        <h4 class="presencetitle">Absen Masuk</h4>
                                         <span>{{ $presensihariini != null ? $presensihariini->jam_in : 'Belum Absen' }}</span>
                                     </div>
                                 </div>
@@ -101,6 +107,7 @@
                         <div class="card gradasired">
                             <div class="card-body">
                                 <div class="presencecontent">
+                                    <!--
                                     <div class="iconpresence">
                                         @if ($presensihariini != null && $presensihariini->jam_out != null)
                                         @php
@@ -111,8 +118,9 @@
                                         <ion-icon name="camera"></ion-icon>
                                         @endif
                                     </div>
+                                    -->
                                     <div class="presencedetail">
-                                        <h4 class="presencetitle">Pulang</h4>
+                                        <h4 class="presencetitle">Absen Pulang</h4>
                                         <span>{{ $presensihariini != null && $presensihariini->jam_out != null ? $presensihariini->jam_out : 'Belum Absen' }}</span>
                                     </div>
                                 </div>
