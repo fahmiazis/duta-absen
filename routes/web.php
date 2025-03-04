@@ -44,6 +44,10 @@ Route::middleware(['auth:murid'])->group(function () {
     Route::get('/presensi/create', [PresensiController::class,'create']);
     Route::get('/gambar/{filename}', [GambarController::class, 'show']);
     Route::post('/presensi/store', [PresensiController::class, 'store']);
+    
+    // Cek status absensi siswa
+    Route::get('/presensi/cek-absen', [PresensiController::class, 'cekAbsen'])->name('cek.absen');
+
 
     // Edit Profile
     Route::get('/editprofile',[PresensiController::class, 'editprofile']);

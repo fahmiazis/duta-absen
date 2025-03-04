@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengajuanizin;
+use App\Models\Presensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class PresensiController extends Controller
 {
@@ -21,6 +23,29 @@ class PresensiController extends Controller
         return view('presensi.create', compact('cek','lok_kantor'));
     }
 
+    public function cekAbsen(Request $request)
+    {
+        $nisn = $request->query('nisn');
+
+        $presensi = Presensi::where('nisn', $nisn)
+            ->whereDate('tgl_presensi', Carbon::today()) // Hanya untuk hari ini
+            ->first();
+
+        if ($presensi) {
+            return response()->json([
+                'absen_masuk' => !empty($presensi->jam_in), // True jika jam_in sudah ada
+                'absen_pulang' => empty($presensi->jam_out) // True jika jam_out masih NULL
+            ]);
+        }
+
+        // Jika belum ada absensi, maka belum absen masuk & belum absen pulang
+        return response()->json([
+            'absen_masuk' => false,
+            'absen_pulang' => false
+        ]);
+    }
+
+
     public function store(Request $request)
     {
         $nisn = Auth::guard('murid')->user()->nisn;
@@ -28,72 +53,70 @@ class PresensiController extends Controller
         $jam = date("H:i:s");
         $lok_kantor = DB::table('konfigurasi_lokasi')->where('id',1)->first();
         $lok = explode(",",$lok_kantor->lokasi_kantor);
-        //$latitudekantor = -5.3968896;
-        //$longitudekantor = 105.2540928;
-        //$latitudekantor = -6.1944491;
-        //$longitudekantor = 106.8229198;
         $latitudekantor = $lok[0];
         $longitudekantor = $lok[1];
         $lokasi = $request->lokasi;
+        $absen = $request->absen;
         $lokasiuser = explode(',', $lokasi);
         $latitudeuser = $lokasiuser[0];
         $longitudeuser = $lokasiuser[1];
 
-
         $jarak = $this->distance($latitudekantor, $longitudekantor, $latitudeuser, $longitudeuser);
         $radius = round($jarak["meters"]);
-        //dd($radius);
 
-        $cek = DB::table('presensi')->where('tgl_presensi', $tgl_presensi)->where('nisn', $nisn)->count();
+        $cek = DB::table('presensi')->where('tgl_presensi', $tgl_presensi)->where('nisn', $nisn)->first();
 
-        if($cek > 0) {
-            $ket = "out";
+        if($radius > 50) {
+            echo "error|Maaf Anda berada di luar radius, jarak anda " . $radius ." meter dari sekolah.|";
         } else {
-            $ket = "in";
-        }
-        // $image = $request->image;
-        // $folderpath = "public/uploads/absensi/";
-        // $formatName = $nisn."-".$tgl_presensi . "-" . $ket;
-        // $image_parts = explode(";base64",$image);
-        // $image_base64 = base64_decode($image_parts[1]);
-        // $fileName = $formatName . ".png";
-        // $file = $folderpath . $fileName;
-
-        // if($radius > $lok_kantor->radius) {
-        if($radius > 500000000000000000000000) {
-            echo "error|Maaf Anda berada di luar radius, jarak anda" . $radius ." meter dari sekolah.|";
-        } else {
-            if($cek > 0){
+            if($absen === 'masuk') {
+                if(!$cek) {
+                    $data = [
+                        'nisn' => $nisn,
+                        'tgl_presensi' => $tgl_presensi,
+                        'jam_in' => $jam,
+                        'lokasi_in' => $lokasi
+                    ];
+                    $simpan = DB::table('presensi')->insert($data);
+                    if($simpan){
+                        echo "success|Terimakasi, Selamat Belajar Di Kelas|in";
+                    } else {
+                        echo "error|Maaf Gagal Absen, Hubungi Petugas IT Sekolah|in";
+                    }
+                } else {
+                    echo "error|Anda sudah melakukan absen masuk hari ini.|in";
+                }
+            } elseif($absen === 'pulang') {
+                if (!$cek) {
+                    return response("error|Anda belum melakukan absen masuk.|out");
+                }
+        
+                if ($cek->jam_out) {
+                    return response("error|Anda sudah melakukan absen pulang hari ini.|out");
+                }
+        
+                // Update absen pulang
                 $data_pulang = [
                     'jam_out' => $jam,
-                    // 'foto_out' => $fileName,
                     'lokasi_out' => $lokasi
                 ];
-                $update = DB::table('presensi')->where('tgl_presensi', $tgl_presensi)->where('nisn', $nisn)->update($data_pulang);
+        
+                $update = DB::table('presensi')
+                    ->where('tgl_presensi', $tgl_presensi)
+                    ->where('nisn', $nisn)
+                    ->update($data_pulang);
+                
                 if($update){
                     echo "success|Terimakasi, Hati Hati Di Jalan Pulang|out";
-                    // Storage::put($file,$image_base64);
                 } else {
                     echo "error|Maaf Gagal Absen, Hubungi Petugas IT Sekolah|out";
                 }
             } else {
-                $data = [
-                    'nisn' => $nisn,
-                    'tgl_presensi' => $tgl_presensi,
-                    'jam_in' => $jam,
-                    // 'foto_in' => $fileName,
-                    'lokasi_in' => $lokasi
-                ];
-                $simpan = DB::table('presensi')->insert($data);
-                if($simpan){
-                    echo "success|Terimakasi, Selamat Belajar Di Kelas|in";
-                    // Storage::put($file,$image_base64);
-                } else {
-                    echo "error|Maaf Gagal Absen, Hubungi Petugas IT Sekolah|in";
-                }
+                echo "error|Anda belum melakukan absen masuk.|out";
             }
         }
     }
+
 
     // Menghitung Jarak
     function distance($lat1, $lon1, $lat2, $lon2)
