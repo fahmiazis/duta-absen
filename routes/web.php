@@ -9,6 +9,7 @@ use App\Http\Controllers\PoinController;
 use App\Http\Controllers\PresensiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GambarController;
+use Illuminate\Support\Facades\Http;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,4 +107,17 @@ Route::middleware(['auth:user'])->group(function(){
     //Konfigurasi
     Route::get('/konfigurasi/lokasikantor',[KonfigurasiController::class,'lokasikantor']);
     Route::post('/konfigurasi/updatelokasikantor',[KonfigurasiController::class,'updatelokasikantor']);
+});
+
+Route::get('send-wa', function(){
+    $response = Http::withHeaders([
+        'Authorization' => '8Xj94HfAUG6LakYdwfN5',
+    ])->withOptions([
+        'verify' => storage_path('app/cacert.pem') // Lokasi file cacert.pem
+    ])->post('https://api.fonnte.com/send', [
+        'target' => '088975660188',
+        'message' => 'Selamat Kamu Sudah Melakukan Absensi',
+    ]);
+
+    dd(json_decode($response, true));
 });

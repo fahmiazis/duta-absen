@@ -31,8 +31,8 @@
 <!-- App Capsule -->
 <div class="row" style="margin-top: 70px;">
     <div class="col">
-        <input type="text" id="lokasi" disabled>
-        <div class="webcam-capture"></div>
+        <!-- Bagian Lokasi User -->
+        <input type="hidden" id="lokasi" disabled>
     </div>
 </div>
 
@@ -91,23 +91,31 @@
     }
 
     function successCallback(position) {
+        // Lokasi Value Adalah Titik Lokasinya User
         //lokasi.value = position.coords.latitude + "," + position.coords.longitude;
-        lokasi.value = -5.390336 + "," + 105.2409856;
-        
-        //var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 28);
-        var map = L.map('map').setView([-5.390336, 105.2409856], 28);
+        lokasi.value = -5.390264357938437 + "," + 105.24105702588515;
+        //lokasi.value = lat_kantor + "," + long_kantor;
         
         var lokasi_kantor = "{{ $lok_kantor->lokasi_kantor }}";
         var lok = lokasi_kantor.split(",");
         var lat_kantor = lok[0];
         var long_kantor = lok[1];
+
+        //var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 28);
+        //var map = L.map('map').setView([lat_kantor, long_kantor], 28);
+        //var map = L.map('map').setView([-5.390336, 105.2409856], 28);
+        var map = L.map('map').setView([-5.390264357938437, 105.24105702588515], 28);
+
         var radius = "{{ $lok_kantor->radius }}"
+
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
+
         //var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-        var marker = L.marker([-5.390336, 105.2409856]).addTo(map);
+        //var marker = L.marker([-5.390336, 105.2409856]).addTo(map);
+        var marker = L.marker([-5.390264357938437, 105.24105702588515]).addTo(map);
 
         //var circle = L.circle([-5.390336, 105.59125199541869], {
         //var circle = L.circle([position.coords.latitude, position.coords.longitude], {
