@@ -49,6 +49,8 @@ Route::middleware(['auth:murid'])->group(function () {
     // Cek status absensi siswa
     Route::get('/presensi/cek-absen', [PresensiController::class, 'cekAbsen'])->name('cek.absen');
 
+    // Cek radius/jarak lokasi siswa
+    Route::get('/presensi/cek-jarak', [PresensiController::class, 'cekJarak'])->name('cek.jarak');
 
     // Edit Profile
     Route::get('/editprofile',[PresensiController::class, 'editprofile']);

@@ -91,20 +91,20 @@
     }
 
     function successCallback(position) {
-        // Lokasi Value Adalah Titik Lokasinya User
-        //lokasi.value = position.coords.latitude + "," + position.coords.longitude;
-        lokasi.value = -5.390264357938437 + "," + 105.24105702588515;
-        //lokasi.value = lat_kantor + "," + long_kantor;
-        
         var lokasi_kantor = "{{ $lok_kantor->lokasi_kantor }}";
         var lok = lokasi_kantor.split(",");
         var lat_kantor = lok[0];
         var long_kantor = lok[1];
 
+        // Lokasi Value Adalah Titik Lokasinya User
+        //lokasi.value = position.coords.latitude + "," + position.coords.longitude;
+        //lokasi.value = -5.390264357938437 + "," + 105.24105702588515;
+        lokasi.value = lat_kantor + "," + long_kantor;
+
         //var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 28);
-        //var map = L.map('map').setView([lat_kantor, long_kantor], 28);
+        var map = L.map('map').setView([lat_kantor, long_kantor], 28);
         //var map = L.map('map').setView([-5.390336, 105.2409856], 28);
-        var map = L.map('map').setView([-5.390264357938437, 105.24105702588515], 28);
+        //var map = L.map('map').setView([-5.390264357938437, 105.24105702588515], 28);
 
         var radius = "{{ $lok_kantor->radius }}"
 
@@ -115,7 +115,8 @@
 
         //var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
         //var marker = L.marker([-5.390336, 105.2409856]).addTo(map);
-        var marker = L.marker([-5.390264357938437, 105.24105702588515]).addTo(map);
+        var marker = L.marker([lat_kantor, long_kantor]).addTo(map);
+        //var marker = L.marker([-5.390264357938437, 105.24105702588515]).addTo(map);
 
         //var circle = L.circle([-5.390336, 105.59125199541869], {
         //var circle = L.circle([position.coords.latitude, position.coords.longitude], {
@@ -139,7 +140,7 @@
         const photo = "{{ Auth::guard('murid')->user()->foto }}";
         var lokasi = $('#lokasi').val();
         
-        // Cek status absensi terlebih dahulu sebelum mengarahkan ke halaman absensi
+        // AJAX Pertama: Cek status absensi siswa
         $.ajax({
             url: "{{ route('cek.absen') }}", // Ganti dengan route untuk mengecek absensi siswa
             type: "GET",
@@ -163,7 +164,32 @@
                 }
             
                 // Arahkan ke halaman absensi dengan parameter yang sesuai
-                window.location.href = `http://localhost:9000?name=${encodeURIComponent(name)}&nisn=${encodeURIComponent(nisn)}&photo=${photo}&lokasi=${lokasi}&absen_masuk=${absen_masuk}&absen_pulang=${absen_pulang}`;
+                //window.location.href = `http://localhost:9000?name=${encodeURIComponent(name)}&nisn=${encodeURIComponent(nisn)}&photo=${photo}&lokasi=${lokasi}&absen_masuk=${absen_masuk}&absen_pulang=${absen_pulang}`;
+
+                // AJAX Kedua: Cek jarak siswa dengan sekolah sebelum absen
+                $.ajax({
+                    url: "{{ route('cek.jarak') }}", // Ganti dengan route pengecekan jarak
+                    type: "GET",
+                    data: { lokasi: lokasi },
+                    success: function (responseJarak) {
+                        if (responseJarak.status === "dalam_jangkauan") {
+                            // Jika dalam radius, lanjutkan absensi
+                            window.location.href = `http://localhost:9000?name=${encodeURIComponent(name)}&nisn=${encodeURIComponent(nisn)}&photo=${photo}&lokasi=${lokasi}&absen_masuk=${absen_masuk}&absen_pulang=${absen_pulang}`;
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Diluar Jangkauan!',
+                                text: `Jarak Anda ${responseJarak.jarak} meter dari sekolah. Tidak bisa absen.`,
+                                timer: 5000,
+                                showConfirmButton: false
+                            });
+                            //alert("Anda berada di luar jangkauan sekolah. Tidak dapat melakukan absensi.");
+                        }
+                    },
+                    error: function () {
+                        alert("Terjadi kesalahan saat memeriksa jarak lokasi.");
+                    }
+                });
             },
             error: function() {
                 alert("Terjadi kesalahan saat mengambil data absensi.");

@@ -13,6 +13,10 @@ class AuthController extends Controller
         if(Auth::guard('user')->attempt(['email' => $request->email, 'password' => $request->password])) {
             return redirect('/panel/dashboardadmin');
         } else {
+            //$pass = 123;
+            //echo Hash::make($pass);
+            //Hash::make('123');
+            //= "$2y$10$GepN6CP3AcloKXUglciQueo2m2/b0AYUhvHhE4hF6EJb4JS6IEtmO
             return redirect('/panel')->with(['warning' => 'Email atau Password Salah!']);
         }
     }

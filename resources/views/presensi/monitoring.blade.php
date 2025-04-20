@@ -38,11 +38,9 @@
                                             <th>Nama Murid</th>
                                             <th>Jurusan</th>
                                             <th>Jam Masuk</th>
-                                            <th>Foto</th>
                                             <th>Jam Pulang</th>
-                                            <th>Foto</th>
                                             <th>keterangan</th>
-                                            <th></th>
+                                            <th>Koordinat</th>
                                         </tr>
                                     </thead>
                                     <tbody id="loadpresensi"></tbody>

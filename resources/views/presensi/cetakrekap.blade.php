@@ -15,7 +15,7 @@
   <!-- Set also "landscape" if you need -->
   <style>
     @page { 
-        size: A4 
+        size: F4 
     }
     #title {
         font-family: Arial, Helvetica, sans-serif;
@@ -53,7 +53,7 @@
 
 <!-- Set "A5", "A4" or "A3" for class name -->
 <!-- Set also "landscape" if you need -->
-<body class="letter landscape">
+<body class="legal landscape">
     <?php
     function selisih($jam_masuk, $jam_keluar)
     {
@@ -83,7 +83,7 @@
             <td>
                 <span id="title">
                     REKAP PRESENSI MURID<br>
-                    PERIODE {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }}<br>
+                    BULAN {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }}<br>
                     SMK NEGERI 2 KALIANDA<br>
                 </span>
                 <span><i>Jl. Soekarno-hatta Km.52 Kalianda, Kecamatan Kalianda, Kabupaten Lampung Selatan, Lampung.</i></span>
@@ -93,11 +93,29 @@
     
     <table class="tabelpresensi">
         <tr>
+            <th rowspan="2">No.</th>
             <th rowspan="2">NISN</th>
             <th rowspan="2">Nama Murid</th>
             <th colspan="31">Tanggal</th>
-            <th rowspan="2">TH</th>
-            <th rowspan="2">TT</th>
+            <th rowspan="2" style="vertical-align: top; background-color: green; color: white;">
+                H<br>a<br>d<br>i<br>r
+            </th>
+            <th rowspan="2" style="vertical-align: top; background-color: saddlebrown; color: white;">
+                T<br>e<br>r<br>l<br>a<br>m<br>b<br>a<br>t
+            </th>
+            <th rowspan="2" style="vertical-align: top; background-color: red; color: white;">
+                A<br>l<br>f<br>a
+            </th>
+            <th rowspan="2" style="vertical-align: top; background-color: yellow; color: black;">
+                I<br>z<br>i<br>n
+            </th>
+            <th rowspan="2" style="vertical-align: top; background-color: blue; color: white;">
+                S<br>a<br>k<br>i<br>t
+            </th>
+            <th rowspan="2" style="vertical-align: top; background-color: purple; color: white;">
+                B<br>o<br>l<br>o<br>s
+            </th>
+            <th rowspan="2" style="vertical-align: top;">T<br>o<br>t<br>a<br>l</th>
         </tr>
         <tr>
             <?php
@@ -110,6 +128,7 @@
         </tr>
         @foreach ($rekap as $d)
         <tr>
+            <td></td>    
             <td>{{ $d->nisn }}</td>
             <td>{{ $d->nama_lengkap }}</td>
             <?php
@@ -128,15 +147,39 @@
                     }
                 }
             ?>
-            <td>
-                <span style="color:{{ $hadir[0]>"07:00:00" ? "red" : "" }}">{{ $hadir[0] }}</span><br>
-                <span style="color:{{ $hadir[1]<"16:00:00" ? "red" : "" }}">{{ $hadir[0] }}</span>
+            <td style="text-align: center;">
+                @if(!empty($d->$tgl))
+                    @php
+                        $jam_masuk = $hadir[0];
+                        $jam_pulang = $hadir[1];
+                    @endphp
+                        
+                    @if($jam_masuk <= "07:00:00" && $jam_pulang >= "16:00:00")
+                        {{-- Hadir tepat waktu --}}
+                        <div style="width: 10px; height: 10px; background-color: green; margin: auto;"></div>
+                    @elseif($jam_masuk > "07:00:00" && $jam_pulang >= "16:00:00")
+                        {{-- Terlambat tapi tetap pulang --}}
+                        <div style="width: 10px; height: 10px; background-color: green; margin: auto;"></div>
+                        <div style="width: 10px; height: 10px; background-color: saddlebrown; margin: auto;"></div>
+                    @else
+                        {{-- Kondisi lainnya misal masuk tapi tidak pulang, atau tidak valid --}}
+                        <div style="width: 10px; height: 10px; background-color: red; margin: auto;"></div>
+                    @endif
+                @else
+                    {{-- Tidak ada data masuk dan pulang (alfa) --}}
+                    <div style="width: 10px; height: 10px; background-color: red; margin: auto;"></div>
+                @endif
             </td>
             <?php
             }
             ?>
             <td>{{ $totalhadir }}</td>
             <td>{{ $totalterlambat }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         @endforeach
     </table>

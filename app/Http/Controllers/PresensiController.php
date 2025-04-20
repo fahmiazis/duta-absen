@@ -47,6 +47,41 @@ class PresensiController extends Controller
         ]);
     }
 
+    public function cekJarak(Request $request)
+    {
+        // Ambil lokasi siswa dari parameter request
+        $lokasi = $request->lokasi;
+        $lokasiuser = explode(',', $lokasi);
+        $latitudeuser = $lokasiuser[0];
+        $longitudeuser = $lokasiuser[1];
+
+        // Ambil lokasi kantor dari database
+        $lok_kantor = DB::table('konfigurasi_lokasi')->where('id',1)->first();
+        $lok = explode(",", $lok_kantor->lokasi_kantor);
+        $latitudekantor = $lok[0];
+        $longitudekantor = $lok[1];
+        $radius = $lok_kantor->radius; // dalam meter
+
+        // Hitung jarak menggunakan Haversine formula
+        $jarak = $this->distance($latitudekantor, $longitudekantor, $latitudeuser, $longitudeuser);
+        $radius_siswa = round($jarak["meters"]);
+        //dd($radius_siswa);
+
+        // Bandingkan jarak dengan radius
+        if ($jarak["meters"] <= $radius) {
+            return response()->json([
+                'status' => 'dalam_jangkauan',
+                'jarak' => $radius_siswa
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'luar_jangkauan',
+                'jarak' => $radius_siswa
+            ]);
+        }
+    }
+
+
 
     public function store(Request $request)
     {
