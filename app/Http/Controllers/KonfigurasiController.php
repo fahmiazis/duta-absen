@@ -19,17 +19,80 @@ class KonfigurasiController extends Controller
         $lokasi_kantor = $request->lokasi_kantor;
         $radius = $request->radius;
 
-        $update = DB::table('konfigurasi_lokasi')
-            ->where('id',1)
-            ->update([
+        // Cek apakah data dengan id = 1 sudah ada
+        $cek = DB::table('konfigurasi_lokasi')->where('id', 1)->first();
+    
+        if ($cek) {
+            // Jika data sudah ada, update
+            $update = DB::table('konfigurasi_lokasi')
+                ->where('id', 1)
+                ->update([
+                    'lokasi_kantor' => $lokasi_kantor,
+                    'radius' => $radius
+                ]);
+            
+            if ($update) {
+                return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
+            } else {
+                return Redirect::back()->with(['warning' => 'Data Gagal Diupdate']);
+            }
+        } else {
+            // Jika data belum ada, insert
+            $insert = DB::table('konfigurasi_lokasi')->insert([
+                'id' => 1, // pastikan jika kamu ingin set id 1 secara manual
                 'lokasi_kantor' => $lokasi_kantor,
                 'radius' => $radius
             ]);
         
-        if($update){
-            return Redirect::back()->with(['success'=>'Data Berhasil Diupdate']);
+            if ($insert) {
+                return Redirect::back()->with(['success' => 'Data Berhasil Ditambahkan']);
+            } else {
+                return Redirect::back()->with(['warning' => 'Data Gagal Ditambahkan']);
+            }
+        }
+    }
+
+    public function jamsekolah()
+    {
+        $jamsekolah = DB::table('jamsekolah')->where('id',1)->first();
+        return view('konfigurasi.jamsekolah',compact('jamsekolah'));
+    }
+
+    public function updatejamsekolah(Request $request)
+    {
+        $jam_masuk = $request->jam_masuk;
+        $jam_pulang = $request->jam_pulang;
+    
+        // Cek apakah data dengan id = 1 sudah ada
+        $cek = DB::table('jamsekolah')->where('id', 1)->first();
+    
+        if ($cek) {
+            // Jika data sudah ada, update
+            $update = DB::table('jamsekolah')
+                ->where('id', 1)
+                ->update([
+                    'jam_masuk' => $jam_masuk,
+                    'jam_pulang' => $jam_pulang
+                ]);
+            
+            if ($update) {
+                return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
+            } else {
+                return Redirect::back()->with(['warning' => 'Data Gagal Diupdate']);
+            }
         } else {
-            return Redirect::back()->with(['warning'=>'Data Gagal Diupdate']);
+            // Jika data belum ada, insert
+            $insert = DB::table('jamsekolah')->insert([
+                'id' => 1, // pastikan jika kamu ingin set id 1 secara manual
+                'jam_masuk' => $jam_masuk,
+                'jam_pulang' => $jam_pulang
+            ]);
+        
+            if ($insert) {
+                return Redirect::back()->with(['success' => 'Data Berhasil Ditambahkan']);
+            } else {
+                return Redirect::back()->with(['warning' => 'Data Gagal Ditambahkan']);
+            }
         }
     }
 }

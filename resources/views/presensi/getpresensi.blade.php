@@ -19,6 +19,7 @@ function selisih($jam_masuk, $jam_keluar)
         <td>{{ $loop->iteration }}</td>
         <td>{{ $d->nisn }}</td>
         <td>{{ $d->nama_lengkap }}</td>
+        <td>{{ $d->kelas }}</td>
         <td>{{ $d->nama_jurusan }}</td>
         <td>{{ $d->jam_in }}</td>
         <td>{!! $d->jam_out != null ? $d->jam_out : '<span class="badge bg-danger">Belum Absen</span>' !!}</td>

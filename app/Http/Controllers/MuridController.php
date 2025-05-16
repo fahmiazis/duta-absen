@@ -33,6 +33,7 @@ class MuridController extends Controller
     {
         $nisn = $request->nisn;
         $nama_lengkap = $request->nama_lengkap;
+        $jenis_kelamin = $request->jenis_kelamin;
         $kelas = $request->kelas;
         $no_hp = $request->no_hp;
         $kode_jurusan = $request->kode_jurusan;
@@ -50,6 +51,7 @@ class MuridController extends Controller
             $data = [
                 'nisn'=>$nisn,
                 'nama_lengkap'=>$nama_lengkap,
+                'jenis_kelamin'=>$jenis_kelamin,
                 'kelas'=>$kelas,
                 'no_hp'=>$no_hp,
                 'foto'=>$foto,
@@ -67,8 +69,8 @@ class MuridController extends Controller
                 return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
             }
         } catch (\Exception $e) {
-            dd($e);
-            //return Redirect::back()->with(['error' => 'Data Gagal Disimpan']);
+            //dd($e);
+            return Redirect::back()->with(['error' => 'Data Gagal Disimpan']);
         }
     }
 

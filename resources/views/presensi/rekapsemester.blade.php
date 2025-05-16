@@ -5,7 +5,7 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <h2 class="page-title">
-                    Rekap Presensi Per Bulan
+                    Rekap Semester
                 </h2>
             </div>
         </div>
@@ -17,7 +17,7 @@
             <div class="col-6">
                 <div class="card">
                     <div class="card-body">
-                        <form action="/presensi/cetakrekap" method="POST" target="_blank">
+                        <form action="/presensi/cetakrekapsemester" method="POST" target="_blank">
                             @csrf
                             <div class="row">
                                 <div class="col-12">
@@ -31,6 +31,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row mt-2">
                                 <div class="col-12">
                                     <div class="form-group">
@@ -46,11 +47,10 @@
                             <div class="row mt-2">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <select name="bulan" id="bulan" class="form-select">
-                                            <option value="">Bulan</option>
-                                            @for ($i=1; $i <= 12; $i++)
-                                            <option value="{{ $i }}" {{ date("m") == $i ? 'selected' : '' }}>{{ $namabulan[$i] }}</option>
-                                            @endfor
+                                        <select name="semester" id="semester" class="form-select">
+                                            <option value="">Semester</option>
+                                            <option value="ganjil">Ganjil</option>
+                                            <option value="genap">Genap</option>
                                         </select>
                                     </div>
                                 </div>

@@ -36,6 +36,7 @@
                                             <th>No.</th>
                                             <th>NISN</th>
                                             <th>Nama Murid</th>
+                                            <th>Kelas</th>
                                             <th>Jurusan</th>
                                             <th>Jam Masuk</th>
                                             <th>Jam Pulang</th>

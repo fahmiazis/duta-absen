@@ -4,10 +4,18 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <h1 class="navbar-brand navbar-brand-autodark">
-      <a href=".">
-        <img src="../../assets/img/logopti.png" alt="img_digitalforte" class="navbar-brand-image" style="width: 120px; height:auto">
+      <a href="/panel/dashboardadmin">
+        <img src="../../assets/img/logo_smkn2.png" alt="SMKN_2_Kalianda" style="width: 120px; height:auto">
       </a>
     </h1>
+    <h3 style="text-align: center;">
+      <a href="/panel/dashboardadmin">
+        Halaman Admin <br>
+      </a>
+      <a href="/panel/dashboardadmin">
+        SMK Negeri 2 Kalianda
+      </a>
+    </h3>
     <div class="navbar-nav flex-row d-lg-none">
       <div class="nav-item d-none d-lg-flex me-3">
         <div class="btn-list">
@@ -227,15 +235,31 @@
                   <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-report"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h5.697" /><path d="M18 14v4h4" /><path d="M18 11v-4a2 2 0 0 0 -2 -2h-2" /><path d="M8 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" /><path d="M18 18m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M8 11h4" /><path d="M8 15h3" /></svg>
                 </span>
                 <span class="nav-link-title">
-                    Presensi
+                    Rekap Presensi
                 </span>
               </a>
               <a class="nav-link" href="/presensi/rekap" style="margin-left: 26px;">
                 <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-month"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M8 14v4" /><path d="M12 14v4" /><path d="M16 14v4" /></svg>
+                </span>
+                <span class="nav-link-title">
+                    Rekap Bulan
+                </span>
+              </a>
+              <a class="nav-link" href="/presensi/rekapsemester" style="margin-left: 26px;">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-calendar-month"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 12a1 1 0 0 1 1 1v4a1 1 0 0 1 -2 0v-4a1 1 0 0 1 1 -1" /><path d="M12 12a1 1 0 0 1 1 1v4a1 1 0 0 1 -2 0v-4a1 1 0 0 1 1 -1" /><path d="M16 12a1 1 0 0 1 1 1v4a1 1 0 0 1 -2 0v-4a1 1 0 0 1 1 -1" /><path d="M16 2a1 1 0 0 1 .993 .883l.007 .117v1h1a3 3 0 0 1 2.995 2.824l.005 .176v12a3 3 0 0 1 -2.824 2.995l-.176 .005h-12a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-12a3 3 0 0 1 2.824 -2.995l.176 -.005h1v-1a1 1 0 0 1 1.993 -.117l.007 .117v1h6v-1a1 1 0 0 1 1 -1m3 7h-14v9.625c0 .705 .386 1.286 .883 1.366l.117 .009h12c.513 0 .936 -.53 .993 -1.215l.007 -.16z" /></svg>
+                </span>
+                <span class="nav-link-title">
+                    Rekap Semester
+                </span>
+              </a>
+              <a class="nav-link" href="/presensi/rekaptahun" style="margin-left: 26px;">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
                   <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-report"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 17m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M17 13v4h4" /><path d="M12 3v4a1 1 0 0 0 1 1h4" /><path d="M11.5 21h-6.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v2m0 3v4" /></svg>
                 </span>
                 <span class="nav-link-title">
-                    Rekap Presensi
+                    Rekap Tahun
                 </span>
               </a>
             </div>
@@ -259,12 +283,12 @@
                     Lokasi Kantor
                   </span>
                 </a>
-                <a class="nav-link" href="/konfigurasi/jamkerja" style="margin-left: 26px;">
+                <a class="nav-link" href="/konfigurasi/jamsekolah" style="margin-left: 26px;">
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-clock-hour-7"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 12l-2 3" /><path d="M12 7v5" /></svg>
                   </span>
                   <span class="nav-link-title">
-                    Jam Kerja
+                    Jam Sekolah
                   </span>
                 </a>
               </div>

@@ -93,6 +93,10 @@ Route::middleware(['auth:user'])->group(function(){
     Route::post('/presensi/cetaklaporan',[PresensiController::class,'cetaklaporan']);
     Route::get('/presensi/rekap',[PresensiController::class,'rekap']);
     Route::post('/presensi/cetakrekap',[PresensiController::class,'cetakrekap']);
+    Route::get('/presensi/rekapsemester',[PresensiController::class,'rekapsemester']);
+    Route::post('/presensi/cetakrekapsemester',[PresensiController::class,'cetakrekapsemester']);
+    Route::get('/presensi/rekaptahun',[PresensiController::class,'rekaptahun']);
+    Route::post('/presensi/cetakrekaptahun',[PresensiController::class,'cetakrekaptahun']);
     Route::get('/presensi/izinsakit',[PresensiController::class,'izinsakit']);
     Route::post('/presensi/approveizinsakit',[PresensiController::class,'approveizinsakit']);
     Route::get('/presensi/{id}/batalkanizinsakit',[PresensiController::class,'batalkanizinsakit']);
@@ -105,10 +109,13 @@ Route::middleware(['auth:user'])->group(function(){
     Route::post('/poin/{nisn}/editpoin/{id_riwayat}',[PoinController::class,'editpoin']);
     Route::post('/poin/{nisn}/updatepoin/{id_riwayat}',[PoinController::class,'updatepoin']);
     Route::post('/poin/{id_riwayat}/delete',[PoinController::class,'delete']);
+    Route::get('/poin/informasi_poin',[PoinController::class,'informasi_poin']);
 
     //Konfigurasi
     Route::get('/konfigurasi/lokasikantor',[KonfigurasiController::class,'lokasikantor']);
     Route::post('/konfigurasi/updatelokasikantor',[KonfigurasiController::class,'updatelokasikantor']);
+    Route::get('/konfigurasi/jamsekolah',[KonfigurasiController::class,'jamsekolah']);
+    Route::post('/konfigurasi/updatejamsekolah',[KonfigurasiController::class,'updatejamsekolah']);
 });
 
 Route::get('send-wa', function(){

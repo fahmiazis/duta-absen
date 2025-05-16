@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('riwayat_pelanggaran', function (Blueprint $table) {
-            $table->id('id_riwayat'); // Primary key
-            $table->string('nisn')->index(); // NISN sebagai identitas siswa
-            $table->string('kelompok');
-            $table->char('jenis_pelanggaran');
+        Schema::create('jamsekolah', function (Blueprint $table) {
+            $table->increments('id');
+            $table->time('jam_masuk');
+            $table->time('jam_pulang');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('riwayat_pelanggaran');
+        Schema::dropIfExists('jamsekolah');
     }
 };

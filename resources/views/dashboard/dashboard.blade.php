@@ -4,26 +4,22 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div id="appCapsule">
         <div class="section" id="user-section">
-            <div id="user-detail">
-                <div class="avatar">
+            <div id="user-detail" style="display: flex; align-items: center;">
+                <div class="avatar" style="margin-right: 10px;">
                     @if(Auth::guard('murid')->user()->foto)
                         @php
                             $path = Storage::url('uploads/murid/'.Auth::guard('murid')->user()->foto);
                         @endphp
-                        <!--php artisan storage:link -> Jalankan Apabila Gambar Tidak Muncul-->
-                        <img src="{{ url($path) }}" alt="avatar" class="imaged" style="width: 2cm; height: 2cm; object-fit: cover;">
-                        <!--<img src="assets/img/sample/avatar/12345.png" alt="avatar" class="imaged w64 rounded">-->
+                        <img src="{{ url($path) }}" alt="avatar" class="imaged" style="width: 2cm; height: 2cm; object-fit: cover; border-radius: 8px;">
                     @else
                         <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
                     @endif
                 </div>
-                <div id="user-info">
-                    <h3 id="user-name">{{ $murid->nama_lengkap }}</h3>
-                    <h4 id="user-name">{{ $murid->kelas }}</h4>
-                    <!--<span id="user-role">{{ $murid->kelas }}</span>-->
-                    <span id="user-role">{{ $murid->nama_jurusan ?? 'Jurusan Tidak Ditemukan' }}</span>
+                <div id="user-info" style="display: flex; flex-direction: column; justify-content: center; line-height: 1.3;">
+                    <h3 id="user-name" style="margin: 0; font-size: 1rem;">{{ $murid->nama_lengkap }}</h3>
+                    <h4 id="user-class" style="margin: 0; font-size: 1rem; color: #f0f0f0;">{{ $murid->kelas }}</h4>
+                    <span id="user-role" style="font-size: 0.85rem; color: #f0f0f0;">{{ $murid->nama_jurusan ?? 'Jurusan Tidak Ditemukan' }}</span>
                 </div>
-
             </div>
         </div>
 
@@ -177,8 +173,12 @@
                                     </div>
                                     <div class="in">
                                         <div>{{ date("d-m-Y", strtotime($d->tgl_presensi)) }}</div>
-                                        <span class="badge badge-success">{{ $d->jam_in }}</span>
-                                        <span class="badge badge-danger">{{ $presensihariini != null && $d->jam_out != null ? $d->jam_out : 'Belum Absen'}}</span>
+                                        <span class="bagde {{ $d->jam_in < $jamMasuk ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $d->jam_in }}
+                                        </span>
+                                        <span class="badge {{ $d->jam_out != null && $d->jam_out >= $jamPulangAsli && $d->jam_out <= $jamPulangBatas ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $d->jam_out != null ? $d->jam_out : 'Belum Absen' }}
+                                        </span>
                                     </div>
                                 </div>
                             </li>
@@ -196,7 +196,7 @@
                                                 <b>{{ $d->nama_lengkap }}</b><br>
                                                 <small class="text-muted">{{ $d->kelas }}</small>
                                             </div>
-                                            <span class="bagde {{ $d->jam_in < "07:00" ? "bg-success" : "bg-danger" }}">
+                                            <span class="bagde {{ $d->jam_in < $jamMasuk ? 'bg-success' : 'bg-danger' }}">
                                                 {{ $d->jam_in }}
                                             </span>
                                         </div>
@@ -212,58 +212,3 @@
     </div>
     <!-- * App Capsule -->
 @endsection
-
-<!-- @push('myscript')
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const nisn = urlParams.get('nisn')
-        const absen = urlParams.get('absen')
-        const lokasi = urlParams.get('lokasi')
-
-        const trueNisn = "{{ Auth::guard('murid')->user()->nisn }}"
-
-        console.log(trueNisn === nisn)
-        console.log(absen === 'true')
-        if (absen === 'true' && nisn === trueNisn) {
-            // console.log('harusnya running ajax')
-            $.ajax({
-                type:'POST',
-                url:'/presensi/store',
-                data:{
-                    _token:"{{ csrf_token() }}",
-                    // image:image,
-                    lokasi:lokasi
-                },
-                cache:false,
-                success:function(respond){
-                    var status = respond.split("|");
-                    if(status[0] == "success"){
-                        if(status[2] =="in"){
-                            notifikasi_in.play();
-                        } else {
-                            notifikasi_out.play();
-                        }
-                        Swal.fire({
-                            title: 'Berhasil !',
-                            text: status[1],
-                            icon: 'success'
-                        })
-                        setTimeout("location.href='/dashboard'", 3000);
-                    } else {
-                        if(status[2] == 'radius') {
-                            radius_sound.play();
-                        }
-                        Swal.fire({
-                            title: 'Error !',
-                            text: status[1],
-                            icon: 'error'
-                        })
-                        setTimeout("location.href='/dashboard'", 3000);
-                    }
-                }
-            });
-        }
-    });
-
-</script> -->

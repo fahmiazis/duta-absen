@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 <head>
   <meta charset="utf-8">
-  <title>Laporan Presensi</title>
+  <title>Rekap Presensi Tahun</title>
 
   <!-- Normalize or reset CSS with your favorite library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
@@ -46,7 +46,7 @@ use Carbon\Carbon;
 
         .tabeldatamurid tr td {
             padding: 5px;
-            font-size: 12px;
+            font-size: 8px;
             word-break: break-word;
         }
 
@@ -62,14 +62,14 @@ use Carbon\Carbon;
             border: 1px solid #131212;
             padding: 3px;
             background-color: #dbdbdb;
-            font-size: 12px;
+            font-size: 8px;
             word-break: break-word;
         }
 
         .tabelpresensi tr td {
             border: 1px solid #131212;
             padding: 1px;
-            font-size: 12px;
+            font-size: 8px;
             word-break: break-word;
         }
 
@@ -111,7 +111,7 @@ use Carbon\Carbon;
   <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
   <section class="sheet padding-10mm">
 
-  <table style="width: 100%;">
+    <table style="width: 100%;">
         <tr>
             <td style="width: 15%; text-align: center;">
                 <img src="{{ asset('assets/img/lampung.png') }}" width="75" height="80" alt="">
@@ -140,70 +140,96 @@ use Carbon\Carbon;
         <tr>
             <td colspan="4" style="text-align: center;">
                 <div style="font-size: 18px; font-weight: bold;">
-                    REKAPITULASI ABSENSI KEHADIRAN SISWA<br>
-                    TAHUN PELAJARAN {{ $tahun-1 }} / {{ $tahun }}<br>
+                    REKAPITULASI ABSEN SISWA SATU SEMESTER<br>
+                    TAHUN PELAJARAN {{ $tahun }}<br>
                 </div>
             </td>
         </tr>
-    </table>
-
-    <table class="tabeldatamurid">
         <tr>
-            <td rowspan="7">
-                @php
-                $path = Storage::url('uploads/murid/'.$murid->foto);
-                @endphp
-                <img src="{{ url($path) }}" alt="" width="150" height="150">
-            </td>
+            <td style="width: 8%; font-size: 14px; font-weight: bold;">Jurusan</td>
+            <td style="width: 2%; font-size: 14px; font-weight: bold; text-align: center;">:</td>
+            <td style="width: 40%; font-size: 14px; font-weight: bold;">{{ $nama_jurusan ?? '...' }}</td>
         </tr>
         <tr>
-            <td>NISN</td>
-            <td>:</td>
-            <td>{{ $murid->nisn }}</td>
-        </tr>
-        <tr>
-            <td>Nama Murid</td>
-            <td>:</td>
-            <td>{{ $murid->nama_lengkap }}</td>
-        </tr>
-        <tr>
-            <td>Kelas</td>
-            <td>:</td>
-            <td>{{ $murid->kelas }}</td>
-        </tr>
-        <tr>
-            <td>Jurusan</td>
-            <td>:</td>
-            <td>{{ $murid->nama_jurusan }}</td>
-        </tr>
-        <tr>
-            <td>Jenis Kelamin</td>
-            <td>:</td>
-            <td>{{ $murid->jenis_kelamin }}</td>
-        </tr>
-        <tr>
-            <td>No. HP</td>
-            <td>:</td>
-            <td>{{ $murid->no_hp }}</td>
+            <td style="font-size: 14px; font-weight: bold;">Kelas</td>
+            <td style="font-size: 14px; font-weight: bold; text-align: center;">:</td>
+            <td style="font-size: 14px; font-weight: bold;">{{ $kelas ?? '...' }}</td>
         </tr>
     </table>
-
+    
     <table class="tabelpresensi">
         <tr>
-            <th>SEMESTER</th>
-            <th>BULAN</th>
-            <th>SAKIT</th>
-            <th>IZIN</th>
-            <th>ALPA</th>
-            <th>BOLOS</th>
+            <th colspan="3">TAHUN {{ $tahun }}</th>
+            <th colspan="8">SEMESTER</th>
+            <th rowspan="3" style="vertical-align: top; background-color: green; color: white;">
+                H<br>A<br>D<br>I<br>R
+            </th>
+            <th rowspan="3" style="vertical-align: top; background-color: red; color: white;">
+                A<br>L<br>F<br>A
+            </th>
+            <th rowspan="3" style="vertical-align: top; background-color: yellow; color: black;">
+                I<br>Z<br>I<br>N
+            </th>
+            <th rowspan="3" style="vertical-align: top; background-color: blue; color: white;">
+                S<br>A<br>K<br>I<br>T
+            </th>
+            <th rowspan="3" style="vertical-align: top;">T<br>o<br>t<br>a<br>l</th>
+        </tr>
+        <tr>
+            <th rowspan="2">No.</th>
+            <th rowspan="2">NISN</th>
+            <th rowspan="2">Nama Murid</th>
+            <th colspan="4" >GANJIL</th>
+            <th colspan="4">GENAP</th>
+        </tr>
+        <tr>
+            <th style="vertical-align: top; background-color: green; color: white;">
+                H<br>A<br>D<br>I<br>R
+            </th>
+            <th style="vertical-align: top; background-color: red; color: white;">
+                A<br>L<br>F<br>A
+            </th>
+            <th style="vertical-align: top; background-color: yellow; color: black;">
+                I<br>Z<br>I<br>N
+            </th>
+            <th style="vertical-align: top; background-color: blue; color: white;">
+                S<br>A<br>K<br>I<br>T
+            </th>
+
+            <th style="vertical-align: top; background-color: green; color: white;">
+                H<br>A<br>D<br>I<br>R
+            </th>
+            <th style="vertical-align: top; background-color: red; color: white;">
+                A<br>L<br>F<br>A
+            </th>
+            <th style="vertical-align: top; background-color: yellow; color: black;">
+                I<br>Z<br>I<br>N
+            </th>
+            <th style="vertical-align: top; background-color: blue; color: white;">
+                S<br>A<br>K<br>I<br>T
+            </th>
         </tr>
 
-        @foreach ($rekapganjil as $d)  
+        <tr>
+        @php
+            $no = 1;
+            $total_laki_laki = 0;
+            $total_perempuan = 0;
+            $totalHadirGenap = 0;
+            $totalAlfaGenap = 0;
+            $totalIzinGenap = 0;
+            $totalSakitGenap = 0;
+            $totalHadirGanjil = 0;
+            $totalAlfaGanjil = 0;
+            $totalIzinGanjil = 0;
+            $totalSakitGanjil = 0;
+        @endphp
+
+        @foreach ($rekapganjil as $d)
+            <td>{{ $no++ }}</td>    
+            <td>{{ $d->nisn }}</td>
+            <td>{{ $d->nama_lengkap }}</td>
             <?php
-                $totalSakitGanjil = 0;
-                $totalIzinGanjil = 0;
-                $totalAlfaGanjil = 0;
-                $totalBolosGanjil = 0;
                 $semester = 'ganjil'; // atau 'ganjil'
                 $bulanSemesterGanjil = [];
 
@@ -216,11 +242,17 @@ use Carbon\Carbon;
                 foreach ($bulanSemesterGanjil as $bulan) {
                     $rekapBulan[$bulan] = [
                         'hadir' => 0,
-                        'sakit' => 0,
-                        'izin' => 0,
                         'alfa' => 0,
-                        'bolos' => 0,
+                        'izin' => 0,
+                        'sakit' => 0,
                     ];
+                }
+
+                // Hitung total laki-laki dan perempuan
+                if ($d->jenis_kelamin == 'Laki-laki') {
+                    $total_laki_laki++;
+                } else {
+                    $total_perempuan++;
                 }
             
                 // Ambil data dari presensi dan izin/sakit
@@ -250,7 +282,6 @@ use Carbon\Carbon;
                             }
                         }
                     
-                        // Menghitung Jumlah Izin dan Sakit
                         $isIzin = false;
                         $isSakit = false;
                         if (!$conn->connect_error) {
@@ -313,8 +344,6 @@ use Carbon\Carbon;
 
                         if ($isHadir && !$isIzin && !$isSakit && !$isBolos) {
                             $rekapBulan[$bulan]['hadir']++;
-                        } elseif ($isHadir && !$isIzin && !$isSakit && $isBolos) {
-                            $rekapBulan[$bulan]['bolos']++;
                         } elseif (($hari != 'Sunday' && $hari != 'Minggu') && !$isLibur && !$isIzin && !$isSakit && !$isHadir) {
                             $rekapBulan[$bulan]['alfa']++;
                         }                        
@@ -326,53 +355,22 @@ use Carbon\Carbon;
             
             <?php
             foreach ($rekapBulan as $bulan => $rekap) {
-                $totalSakitGanjil += $rekap['sakit'];
-                $totalIzinGanjil += $rekap['izin'];
+                $totalHadirGanjil += $rekap['hadir'];
                 $totalAlfaGanjil += $rekap['alfa'];
-                $totalBolosGanjil += $rekap['bolos'];
+                $totalIzinGanjil += $rekap['izin'];
+                $totalSakitGanjil += $rekap['sakit'];
             }
             ?>
-            
-            <td rowspan="7">GANJIL</td>
-            <?php
-                $namaBulanGanjil = [
-                    7 => 'JULI',
-                    8 => 'AGUSTUS',
-                    9 => 'SEPTEMBER',
-                    10 => 'OKTOBER',
-                    11 => 'NOVEMBER',
-                    12 => 'DESEMBER',
-                ];
 
-                foreach ($namaBulanGanjil as $bulanAngka => $namaBulan) {
-                    echo "<tr>
-                            <td>{$namaBulan}</td>
-                            <td>{$rekapBulan[$bulanAngka]['sakit']}</td>
-                            <td>{$rekapBulan[$bulanAngka]['izin']}</td>
-                            <td>{$rekapBulan[$bulanAngka]['alfa']}</td>
-                            <td>{$rekapBulan[$bulanAngka]['bolos']}</td>
-                          </tr>";
-                }
-            ?>
-
+            <td><?= $totalHadirGanjil ?></td>
+            <td><?= $totalAlfaGanjil ?></td>
+            <td><?= $totalIzinGanjil ?></td>
+            <td><?= $totalSakitGanjil ?></td>
         @endforeach
 
-            <tr>
-                <td colspan="2">JUMLAH</td>
-                <td><?= $totalSakitGanjil ?></td>
-                <td><?= $totalIzinGanjil ?></td>
-                <td><?= $totalAlfaGanjil ?></td>
-                <td><?= $totalBolosGanjil ?></td>
-            </tr>
-
-
-        @foreach ($rekapgenap as $d)  
+        @foreach ($rekapgenap as $d)
             <?php
-                $totalSakitGenap = 0;
-                $totalIzinGenap = 0;
-                $totalAlfaGenap = 0;
-                $totalBolosGenap = 0;
-                $semester = 'genap';
+                $semester = 'genap'; // atau 'ganjil'
                 $bulanSemesterGenap = [];
 
                 if ($semester == 'genap') {
@@ -384,10 +382,9 @@ use Carbon\Carbon;
                 foreach ($bulanSemesterGenap as $bulan) {
                     $rekapBulan[$bulan] = [
                         'hadir' => 0,
-                        'sakit' => 0,
-                        'izin' => 0,
                         'alfa' => 0,
-                        'bolos' => 0,
+                        'izin' => 0,
+                        'sakit' => 0,
                     ];
                 }
             
@@ -418,7 +415,6 @@ use Carbon\Carbon;
                             }
                         }
                     
-                        // Menghitung Jumlah Izin dan Sakit
                         $isIzin = false;
                         $isSakit = false;
                         if (!$conn->connect_error) {
@@ -481,8 +477,6 @@ use Carbon\Carbon;
 
                         if ($isHadir && !$isIzin && !$isSakit && !$isBolos) {
                             $rekapBulan[$bulan]['hadir']++;
-                        } elseif ($isHadir && !$isIzin && !$isSakit && $isBolos) {
-                            $rekapBulan[$bulan]['bolos']++;
                         } elseif (($hari != 'Sunday' && $hari != 'Minggu') && !$isLibur && !$isIzin && !$isSakit && !$isHadir) {
                             $rekapBulan[$bulan]['alfa']++;
                         }                        
@@ -494,60 +488,69 @@ use Carbon\Carbon;
             
             <?php
             foreach ($rekapBulan as $bulan => $rekap) {
-                $totalSakitGenap += $rekap['sakit'];
-                $totalIzinGenap += $rekap['izin'];
+                $totalHadirGenap += $rekap['hadir'];
                 $totalAlfaGenap += $rekap['alfa'];
-                $totalBolosGenap += $rekap['bolos'];
+                $totalIzinGenap += $rekap['izin'];
+                $totalSakitGenap += $rekap['sakit'];
             }
             ?>
-            
-            <td rowspan="7">GANJIL</td>
-            <?php
-                $namaBulanGenap = [
-                    1 => 'JANUARI',
-                    2 => 'FEBRUARI',
-                    3 => 'MARET',
-                    4 => 'APRIL',
-                    5 => 'MEI',
-                    6 => 'JUNI',
-                ];
 
-                foreach ($namaBulanGenap as $bulanAngka => $namaBulan) {
-                    echo "<tr>
-                            <td>{$namaBulan}</td>
-                            <td>{$rekapBulan[$bulanAngka]['sakit']}</td>
-                            <td>{$rekapBulan[$bulanAngka]['izin']}</td>
-                            <td>{$rekapBulan[$bulanAngka]['alfa']}</td>
-                            <td>{$rekapBulan[$bulanAngka]['bolos']}</td>
-                          </tr>";
-                }
-            ?>
-
+            <td><?= $totalHadirGenap ?></td>
+            <td><?= $totalAlfaGenap ?></td>
+            <td><?= $totalIzinGenap ?></td>
+            <td><?= $totalSakitGenap ?></td>
         @endforeach
 
-            <tr>
-                <td colspan="2">JUMLAH</td>
-                <td><?= $totalSakitGenap ?></td>
-                <td><?= $totalIzinGenap ?></td>
-                <td><?= $totalAlfaGenap ?></td>
-                <td><?= $totalBolosGenap ?></td>
-            </tr>
+            <td><?= $totalHadirGanjil + $totalHadirGenap ?></td>
+            <td><?= $totalAlfaGanjil + $totalAlfaGenap ?></td>
+            <td><?= $totalIzinGanjil + $totalIzinGenap ?></td>
+            <td><?= $totalSakitGanjil + $totalSakitGenap ?></td>
+            <td></td>
+        </tr>
     </table>
-    
+
     <table width="100%" style="margin-top: 50px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
         <tr>
-            <td style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 0px 0px 100px; font-family: 'Times New Roman', Times, serif; font-size: 12px;">
+            <td style="width: 40%; vertical-align: top;">
+                <table style="width: 50%;">
+                    <tr>
+                        <td style="width: 30%; font-size: 11px;">Laki-laki</td>
+                        <td style="width: 5%; text-align: center; font-size: 11px;">:</td>
+                        <td style="font-size: 11px;">{{ $total_laki_laki }}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 11px;">Perempuan</td>
+                        <td style="text-align: center; font-size: 11px;">:</td>
+                        <td style="font-size: 11px;">{{ $total_perempuan }}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 11px;">Jumlah</td>
+                        <td style="text-align: center; font-size: 11px;">:</td>
+                        <td style="font-size: 11px;">{{ $total_laki_laki + $total_perempuan }}</td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 5px 5px 20px; font-family: 'Times New Roman', Times, serif; font-size: 12px;">
                 Kepala SMK Negeri 2 Kalianda,<br><br><br><br><br><br><br>
                 <u><b>NYOMAN MISTER, M.Pd</b></u><br>
                 Pembina<br>
                 NIP. 19680814 200012 1 002
             </td>
-            <td style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 0px 0px 100px; font-family: 'Times New Roman', Times, serif; font-size: 12px;">
+            <td style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 5px 5px 20px; font-family: 'Times New Roman', Times, serif; font-size: 12px;">
                 Kalianda, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}<br>
                 Petugas Absensi,
             </td>
         </tr>
     </table>
+
+    <table style="width: 100%;">
+        <tr>
+            <td style="text-align: left;">
+                <img src="{{ asset('assets/img/logo-KAN.png') }}" width="65" height="30" alt="">
+            </td>
+        </tr>
+    </table>
+
   </section>
 
 </body>

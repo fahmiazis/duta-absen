@@ -2,15 +2,23 @@
 @section('content')
 <div class="page-header d-print-none">
     <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <h2 class="page-title">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-auto">
+                <h2 class="page-title mb-0">
                     Monitoring Poin Pelanggaran
                 </h2>
+            </div>
+            <div class="col-auto">
+                <form action="/poin/informasi_poin" method="GET" target="_blank">
+                    <button class="btn btn-primary" type="submit">
+                        Informasi Pelanggaran
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
 <div class="page-body">
     <div class="container-xl">
         <div class="row">

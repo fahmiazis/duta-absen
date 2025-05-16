@@ -29,6 +29,26 @@
                                         {{ Session::get('warning') }}
                                     </div>
                                 @endif
+                                @if (Session::get('error'))
+                                    <div class="alert alert-warning">
+                                        {{ Session::get('error') }}
+                                    </div>
+                                @endif
+                                @if ($notifikasi_a)
+                                    <div class="alert alert-danger">
+                                        {!! $notifikasi_a !!}
+                                    </div>
+                                @endif
+                                @if ($notifikasi_b)
+                                    <div class="alert alert-danger">
+                                        {!! $notifikasi_b !!}
+                                    </div>
+                                @endif
+                                @if ($notifikasi_c)
+                                    <div class="alert alert-danger">
+                                        {!! $notifikasi_c !!}
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="row">
@@ -45,8 +65,8 @@
                                     <thead>
                                         <tr>
                                             <th>No.</th>
-                                            <th>Riwayat Pelanggaran</th>
-                                            <th>Poin</th>
+                                            <th>Kelompok Pelanggaran</th>
+                                            <th>Jenis Pelanggaran</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -54,8 +74,18 @@
                                     @foreach($riwayatpelanggaran as $d)
                                         <tr>
                                             <td>{{ $loop->iteration + $riwayatpelanggaran->firstItem()-1 }}</td>
-                                            <td>{{ $d->pelanggaran }}</td>
-                                            <td>{{ $d->poin }}</td>
+                                            <td>
+                                                @if($d->kelompok == 'kelompok_a')
+                                                    KELOMPOK A
+                                                @elseif($d->kelompok == 'kelompok_b')
+                                                    KELOMPOK B
+                                                @elseif($d->kelompok == 'kelompok_c')
+                                                    KELOMPOK C
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                            <td>{{ $d->jenis_pelanggaran }}</td>
                                             <td>
                                                 <div class="btn-group">
                                                     <a href="#" class="edit btn btn-info btn-sm" nisn="{{ $d->nisn }}" id_riwayat="{{ $d->id_riwayat }}">
@@ -108,22 +138,21 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="input-icon mb-3">
-                                <span class="input-icon-addon">
-                                  <!-- Download SVG icon from http://tabler-icons.io/i/user -->
-                                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-flag"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z" /><path d="M5 21v-7" /></svg>
-                                </span>
-                                <input type="text" value="" id="pelanggaran" class="form-control" name="pelanggaran" placeholder="Input Pelanggaran">
-                            </div>
+                                <select name="kelompok" id="kelompok" class="form-select kelompokadd-select">
+                                    <option value="">KELOMPOK</option>
+                                    <option value="kelompok_a">KELOMPOK A</option>
+                                    <option value="kelompok_b">KELOMPOK B</option>
+                                    <option value="kelompok_c">KELOMPOK C</option>
+                                </select>
+                              </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="input-icon mb-3">
-                                <span class="input-icon-addon">
-                                  <!-- Download SVG icon from http://tabler-icons.io/i/user -->
-                                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calculator"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 3m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M8 7m0 1a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1z" /><path d="M8 14l0 .01" /><path d="M12 14l0 .01" /><path d="M16 14l0 .01" /><path d="M8 17l0 .01" /><path d="M12 17l0 .01" /><path d="M16 17l0 .01" /></svg>
-                                </span>
-                                <input type="text" value="" id="poin" class="form-control" name="poin" placeholder="Masukkan Poin">
+                                <select name="jenis_pelanggaran" id="jenis_pelanggaran" class="form-select jenis-pelanggaranadd-select">
+                                    <option value="">JENIS PELANGGARAN</option>
+                                </select>
                               </div>
                         </div>
                     </div>
@@ -219,27 +248,94 @@
             });
         });
 
+        const kelompokSelect = document.getElementById('kelompok');
+        const pelanggaranSelect = document.getElementById('jenis_pelanggaran');
+        const dataPelanggaran = {
+          kelompok_a: [
+            { value: 'a. Memalsukan tanda tangan, wali kelas atau kepala sekolah', text: 'a. Memalsukan tanda tangan, wali kelas atau kepala sekolah' },
+            { value: 'b. Membawa minum-minuman keras/narkoba', text: 'b. Membawa minum-minuman keras/narkoba' },
+            { value: 'c. Berkelahi atau main hakim sendiri', text: 'c. Berkelahi atau main hakim sendiri' },
+            { value: 'd. Merusak sarana/prasarana sekolah', text: 'd. Merusak sarana/prasarana sekolah' },
+            { value: 'e. Mengambil milik orang lain', text: 'e. Mengambil milik orang lain' },
+            { value: 'f. Membawa/menyebarkan selebaran yang menimbulkan kerusuhan', text: 'f. Membawa/menyebarkan selebaran yang menimbulkan kerusuhan' },
+            { value: 'g. Berurusan dengan pihak berwajib kerena melaukakan tindak kejahatan', text: 'g. Berurusan dengan pihak berwajib kerena melaukakan tindak kejahatan' },
+            { value: 'h. Membawa senjata tajam', text: 'h. Membawa senjata tajam' },
+            { value: 'i. Merubah/memalsukan raport', text: 'i. Merubah/memalsukan raport' },
+            { value: 'j. Mengikuti organisasi terlarang', text: 'j. Mengikuti organisasi terlarang' }
+          ],
+          kelompok_b: [
+            { value: 'a. Membuat saran ijin palsu', text: 'a. Membuat saran ijin palsu' },
+            { value: 'b. Membolos/keluar meninggalkan sekolah tanpa ijin', text: 'b. Membolos/keluar meninggalkan sekolah tanpa ijin' },
+            { value: 'c. Membawa Handphone', text: 'c. Membawa Handphone' },
+            { value: 'd. Membawa buku/gambar/video porno', text: 'd. Membawa buku/gambar/video porno' },
+            { value: 'e. Melindungi teman yang bersalah', text: 'e. Melindungi teman yang bersalah' },
+            { value: 'f. Meloncat pagar', text: 'f. Meloncat pagar' },
+            { value: 'g. Mengganggu/mengacau kelas lain', text: 'g. Mengganggu/mengacau kelas lain' },
+            { value: 'i. Mencorat-coret tembok, pintu, meja, kursi, dengan kata-kata yang tidak semestinya', text: 'i. Mencorat-coret tembok, pintu, meja, kursi, dengan kata-kata yang tidak semestinya' },
+            { value: 'j. Merokok disekolah', text: 'j. Merokok disekolah' },
+            { value: 'k. Menyembunyikan petasan disekolah', text: 'k. Menyembunyikan petasan disekolah' }
+          ],
+          kelompok_c: [
+            { value: 'a. Datang terlambat masuk sekolah', text: 'a. Datang terlambat masuk sekolah' },
+            { value: 'b. Tidak megikuti apel pagi', text: 'b. Tidak megikuti apel pagi' },
+            { value: 'c. Keluar kelas tanpa ijin', text: 'c. Keluar kelas tanpa ijin' },
+            { value: 'd. Tidak melakukan tugas piket kelas', text: 'd. Tidak melakukan tugas piket kelas' },
+            { value: 'e. Berpakaian seragam tidak lengkap', text: 'e. Berpakaian seragam tidak lengkap' },
+            { value: 'f. Makan didalam kelas (waktu pelajaran)', text: 'f. Makan didalam kelas (waktu pelajaran)' },
+            { value: 'g. Membeli makanan waktu pelajaran', text: 'g. Membeli makanan waktu pelajaran' },
+            { value: 'h. Membuang sampah tidak pada tempatnya', text: 'h. Membuang sampah tidak pada tempatnya' },
+            { value: 'i. Bermain ditempat parkir', text: 'i. Bermain ditempat parkir' },
+            { value: 'j. Berias yang berlebihan', text: 'j. Berias yang berlebihan' },
+            { value: 'k. Memakai gelang, kalung, anting-anting bagi pria', text: 'k. Memakai gelang, kalung, anting-anting bagi pria' },
+            { value: 'l. Memakai perhiasan berlebihan bagi wanita', text: 'l. Memakai perhiasan berlebihan bagi wanita' },
+            { value: 'm. Tidak mengindahkan surat panggilan', text: 'm. Tidak mengindahkan surat panggilan' },
+            { value: 'n. Rambut gondrong/tidak rapi, rambut diwarna', text: 'n. Rambut gondrong/tidak rapi, rambut diwarna' },
+            { value: 'o. Berada dikantin, UKS pada waktu pergantian pelajaran tanpa ijin', text: 'o. Berada dikantin, UKS pada waktu pergantian pelajaran tanpa ijin' },
+            { value: 'p. Selama upacara berlangsung siswa dilarang di dalam kelas (jika sakit sementara di ruang UKS/ruang data)', text: 'p. Selama upacara berlangsung siswa dilarang di dalam kelas (jika sakit sementara di ruang UKS/ruang data)' },
+            { value: 'q. Membuat gaduh selama pelaksanaan KBM', text: 'q. Membuat gaduh selama pelaksanaan KBM' },
+            { value: 'r. Tidak memakai sepatu hitam pada hari senin, selasa, rabu, dan kamis', text: 'r. Tidak memakai sepatu hitam pada hari senin, selasa, rabu, dan kamis' },
+            { value: 's. Mengendarai kendaraan di halaman sekolah', text: 's. Mengendarai kendaraan di halaman sekolah' }
+          ]
+        };
+
+        kelompokSelect.addEventListener('change', function () {
+          const selectedKelompok = this.value;
+        
+          // Kosongkan dropdown pelanggaran
+          pelanggaranSelect.innerHTML = '<option value="">JENIS PELANGGARAN</option>';
+        
+          // Tampilkan opsi sesuai kelompok
+          if (dataPelanggaran[selectedKelompok]) {
+            dataPelanggaran[selectedKelompok].forEach(function (item) {
+              const option = document.createElement('option');
+              option.value = item.value;
+              option.text = item.text;
+              pelanggaranSelect.appendChild(option);
+            });
+          }
+        });
+
         $("#frmMurid").submit(function(){
-            var pelanggaran = $("#pelanggaran").val();
-            var poin = $("#poin").val();
-            if(pelanggaran==""){
+            var kelompok = $(this).find(".kelompokadd-select").val();
+            var jenis_pelanggaran = $(this).find(".jenis-pelanggaranadd-select").val();
+            if(kelompok==""){
                 Swal.fire({
                     title: 'Warning!',
-                    text: 'Pelanggaran Harus Diisi',
+                    text: 'Kelompok Harus Diisi',
                     icon: 'warning',
                     confirmButtonText: 'OK'
                   }).then(()=> {
-                      $("#pelanggaran").focus();
+                      $("#kelompok").focus();
                   });
                 return false;
-            } else if (poin==""){
+            } else if (jenis_pelanggaran==""){
                 Swal.fire({
                     title: 'Warning!',
-                    text: 'Poin Harus Diisi',
+                    text: 'Jenis Pelanggaran Harus Diisi',
                     icon: 'warning',
                     confirmButtonText: 'OK'
                   }).then(()=> {
-                      $("#poin").focus();
+                      $("#jenis_pelanggaran").focus();
                   });
                 return false;
             }
