@@ -85,7 +85,7 @@
                             <th>Kelas</th>
                             <th>Status</th>
                             <th>Keterangan</th>
-                            <th>Status Approved</th>
+                            <th>Status Persetujuan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -105,13 +105,14 @@
                                 @elseif ($d->status_approved==2)
                                 <span class="badge bg-danger">Ditolak</span>
                                 @else
-                                <span class="badge bg-warning">Pending</span>
+                                <span class="badge bg-warning">Menunggu</span>
                                 @endif
                             </td>
                             <td>
                                 @if ($d->status_approved==0)
                                 <a href="#" class="btn btn-sm btn-primary" id="approved" id_izinsakit="{{ $d->id }}">
                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-external-link"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" /><path d="M11 13l9 -9" /><path d="M15 4h5v5" /></svg>
+                                    Edit
                                 </a>
                                 @else
                                 <a href="/presensi/{{ $d->id }}/batalkanizinsakit" class="btn btn-sm bg-danger">
@@ -134,7 +135,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Izin / Sakit</h5>
+                <h5 class="modal-title">Disetujui / Ditolak</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

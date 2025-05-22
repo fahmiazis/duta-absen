@@ -69,7 +69,7 @@
                         <div class="card card-md">
                             <div class="card-body">
                                 <h2 class="fs-1 fw-bolder text-center mb-0">Login Admin</h2>
-                                <p class="fs-4 text-secondary text-center">Presensi dan Cuti Dalam Satu Genggaman</p>
+                                <p class="fs-4 text-secondary text-center">SMKN 2 Kalianda</p>
                                 @if (Session::get('warning'))
                                 <div class="alert alert-warning">
                                     <p>{{ Session::get('warning') }}</p>

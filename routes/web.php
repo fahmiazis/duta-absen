@@ -89,10 +89,10 @@ Route::middleware(['auth:user'])->group(function(){
     Route::get('/presensi/monitoring',[PresensiController::class,'monitoring']);
     Route::post('/getpresensi',[PresensiController::class,'getpresensi']);
     Route::post('/tampilkanpeta',[PresensiController::class,'tampilkanpeta']);
-    Route::get('/presensi/laporan',[PresensiController::class,'laporan']);
-    Route::post('/presensi/cetaklaporan',[PresensiController::class,'cetaklaporan']);
-    Route::get('/presensi/rekap',[PresensiController::class,'rekap']);
-    Route::post('/presensi/cetakrekap',[PresensiController::class,'cetakrekap']);
+    Route::get('/presensi/rekappresensi',[PresensiController::class,'rekappresensi']);
+    Route::post('/presensi/cetakrekappresensi',[PresensiController::class,'cetakrekappresensi']);
+    Route::get('/presensi/rekapbulan',[PresensiController::class,'rekapbulan']);
+    Route::post('/presensi/cetakrekapbulan',[PresensiController::class,'cetakrekapbulan']);
     Route::get('/presensi/rekapsemester',[PresensiController::class,'rekapsemester']);
     Route::post('/presensi/cetakrekapsemester',[PresensiController::class,'cetakrekapsemester']);
     Route::get('/presensi/rekaptahun',[PresensiController::class,'rekaptahun']);
@@ -112,7 +112,7 @@ Route::middleware(['auth:user'])->group(function(){
     Route::get('/poin/informasi_poin',[PoinController::class,'informasi_poin']);
 
     //Konfigurasi
-    Route::get('/konfigurasi/lokasikantor',[KonfigurasiController::class,'lokasikantor']);
+    Route::get('/konfigurasi/lokasisekolah',[KonfigurasiController::class,'lokasisekolah']);
     Route::post('/konfigurasi/updatelokasikantor',[KonfigurasiController::class,'updatelokasikantor']);
     Route::get('/konfigurasi/jamsekolah',[KonfigurasiController::class,'jamsekolah']);
     Route::post('/konfigurasi/updatejamsekolah',[KonfigurasiController::class,'updatejamsekolah']);

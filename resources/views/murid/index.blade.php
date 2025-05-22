@@ -170,7 +170,7 @@
                         <div class="col-12">
                             <div class="input-icon mb-3">
                                 <select name="jenis_kelamin" id="jenis_kelamin" class="form-select">
-                                    <option value="">Jenis Kelamin</option>
+                                    <option value="">Pilih Jenis Kelamin</option>
                                     <option value="Laki-laki">Laki-laki</option>
                                     <option value="Perempuan">Perempuan</option>
                                 </select>
@@ -180,15 +180,26 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="input-icon mb-3">
-                                <span class="input-icon-addon">
-                                  <!-- Download SVG icon from http://tabler-icons.io/i/user -->
-                                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-device-analytics"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 4m0 1a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z" /><path d="M7 20l10 0" /><path d="M9 16l0 4" /><path d="M15 16l0 4" /><path d="M8 12l3 -3l2 2l3 -3" /></svg>
-                                </span>
-                                <input type="text" value="" id="kelas" class="form-control" name="kelas" placeholder="Kelas">
+                                <select name="kelas" id="kelas" class="form-select">
+                                    <option value="">Pilih Kelas</option>
+                                    <option value="X">Kelas X</option>
+                                    <option value="XI">Kelas XI</option>
+                                    <option value="XII">Kelas XII</option>
+                                </select>
                               </div>
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-12">
+                            <select name="kode_jurusan" id="kode_jurusan" class="form-select">
+                                <option value="">Pilih Jurusan</option>
+                                @foreach ($jurusan as $d)
+                                    <option {{ Request('kode_jurusan')==$d->kode_jurusan ? 'selected' : '' }} value="{{ $d->kode_jurusan }}">{{ $d->nama_jurusan }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
                         <div class="col-12">
                             <div class="input-icon mb-3">
                                 <span class="input-icon-addon">
@@ -199,19 +210,9 @@
                               </div>
                         </div>
                     </div>
-                    <div class="row mt-2">
+                    <div class="row">
                         <div class="col-12">
-                            <input type="file" name="foto" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-12">
-                            <select name="kode_jurusan" id="kode_jurusan" class="form-select">
-                                <option value="">Jurusan</option>
-                                @foreach ($jurusan as $d)
-                                    <option {{ Request('kode_jurusan')==$d->kode_jurusan ? 'selected' : '' }} value="{{ $d->kode_jurusan }}">{{ $d->nama_jurusan }}</option>
-                                @endforeach
-                            </select>
+                            <input type="file" name="foto" class="form-control mb-2">
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -285,13 +286,14 @@
             });
             */
             Swal.fire({
-                title: "Apakah Anda Yakin Data ini Mau Di Hapus?",
+                title: "Apakah Anda Yakin Data ini Ingin Di Hapus?",
                 text: "Jika Ya Maka Data Akan Terhapus Permanen",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, Hapus Saja"
+                confirmButtonText: "Ya, Hapus Saja",
+                cancelButtonText: "Batalkan"
             }).then((result) => {
                 if (result.isConfirmed) {
                     form.submit();

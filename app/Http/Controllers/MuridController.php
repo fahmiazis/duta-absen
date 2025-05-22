@@ -84,7 +84,9 @@ class MuridController extends Controller
 
     public function update($nisn, Request $request)
     {
-        $nisn = $request->nisn;
+        $nisn_lama = $request->nisn_lama; // dari hidden input
+        $nisn_baru = $request->nisn_baru; // dari form editable
+
         $nama_lengkap = $request->nama_lengkap;
         $kelas = $request->kelas;
         $no_hp = $request->no_hp;
@@ -93,7 +95,7 @@ class MuridController extends Controller
         $old_foto = $request->old_foto;
 
         if($request->hasFile('foto')){
-            $foto = $nisn.".".$request
+            $foto = $nisn_baru.".".$request
                 ->file('foto')
                 ->getClientOriginalExtension();
         } else {
@@ -102,6 +104,7 @@ class MuridController extends Controller
 
         try {
             $data = [
+                'nisn' => $nisn_baru,
                 'nama_lengkap'=>$nama_lengkap,
                 'kelas'=>$kelas,
                 'no_hp'=>$no_hp,
@@ -122,8 +125,8 @@ class MuridController extends Controller
                 return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
             }
         } catch (\Exception $e) {
-            //dd($e);
-            return Redirect::back()->with(['error' => 'Data Gagal Diupdate']);
+            dd($e);
+            //return Redirect::back()->with(['error' => 'Data Gagal Diupdate']);
         }
     }
 

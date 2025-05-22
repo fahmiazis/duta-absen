@@ -2,12 +2,7 @@
 @section('header')
 <!--- App Header -->
 <div class="appHeader bg-primary text-light">
-    <div class="left">
-        <a href="" class="headerButton goBack">
-            <ion-icon name="chevron-back-outline"></ion-icon>
-        </a>
-    </div>
-    <div class="pageTitle">Edit Profile</div>
+    <div class="pageTitle">Edit Profil</div>
     <div class="right"></div>
 </div>
 <!--- * App Header -->
@@ -39,6 +34,16 @@
             <div class="input-wrapper">
                 <input type="text" class="form-control" value="{{ $murid->nama_lengkap }}" name="nama_lengkap" placeholder="Nama Lengkap" autocomplete="off">
             </div>
+        </div>
+        <div class="form-group boxed">
+            <select name="jurusan" id="jurusan" class="form-control">
+                <option value="">Pilih Jurusan</option>
+            </select>
+        </div>
+        <div class="form-group boxed">
+            <select name="kelas" id="kelas" class="form-control">
+                <option value="">Pilih Kelas</option>
+            </select>
         </div>
         <div class="form-group boxed">
             <div class="input-wrapper">

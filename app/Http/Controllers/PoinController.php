@@ -126,7 +126,7 @@ class PoinController extends Controller
                 $notifikasi_b = "Murid dengan NISN {$nisn} telah melakukan pelanggaran Kelompok B sebanyak {$jumlahPelanggaranB} kali."
                 . "<br><strong>Sanksi:</strong><br>"
                 . "f. Melakukan pelanggaran 6 kali dan dipersilahkan mengajukan permohonan keluar dari sekolah";
-            } else {
+            } elseif ($jumlahPelanggaranB > 6) {
                 $notifikasi_b = "Murid dengan NISN {$nisn} telah melakukan pelanggaran Kelompok B sebanyak {$jumlahPelanggaranB} kali."
                 . "<br><strong>Sanksi:</strong><br>"
                 . "f. Melakukan pelanggaran {$jumlahPelanggaranB} kali dan dipersilahkan mengajukan permohonan keluar dari sekolah";
@@ -172,7 +172,7 @@ class PoinController extends Controller
                 . "<br><strong>Sanksi:</strong><br>"
                 . "f. Melakukan pelanggaran 9 kali dikembalikan kepada orang tua dan dipersilahkan <br>"
                 . "mengajukan permohonan pindah sekolah";
-            } else {
+            } elseif ($jumlahPelanggaranC > 9) {
                 $notifikasi_c = "Murid dengan NISN {$nisn} telah melakukan pelanggaran Kelompok C sebanyak {$jumlahPelanggaranC} kali."
                 . "<br><strong>Sanksi:</strong><br>"
                 . "f. Melakukan pelanggaran {$jumlahPelanggaranC} kali dikembalikan kepada orang tua dan dipersilahkan <br>"

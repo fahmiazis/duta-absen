@@ -2,11 +2,6 @@
 @section('header')
 <!-- App Header -->
 <div class="appHeader bg-primary text-light">
-    <div class="left">
-        <a href="javascript:;" class="headerButton goBack">
-            <ion-icon name="chevron-back-outline"></ion-icon>
-        </a>
-    </div>
     <div class="pageTitle">Halaman Absen</div>
     <div class="right"></div>
 </div>
@@ -19,6 +14,9 @@
         margin: auto;
         height: auto !important;
         border-radius: 15px;
+    }
+    .swal2-container {
+      z-index: 999999 !important;
     }
     #map {
         height: 300px;
@@ -91,8 +89,8 @@
     }
 
     function successCallback(position) {
-        var lokasi_kantor = "{{ $lok_kantor->lokasi_kantor }}";
-        var lok = lokasi_kantor.split(",");
+        var lokasi_sekolah = "{{ $lok_kantor->lokasi_sekolah }}";
+        var lok = lokasi_sekolah.split(",");
         var lat_kantor = lok[0];
         var long_kantor = lok[1];
 
@@ -102,7 +100,7 @@
         lokasi.value = lat_kantor + "," + long_kantor;
 
         //var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 28);
-        var map = L.map('map').setView([lat_kantor, long_kantor], 28);
+        var map = L.map('map').setView([lat_kantor, long_kantor], 18);
         //var map = L.map('map').setView([-5.390336, 105.2409856], 28);
         //var map = L.map('map').setView([-5.390264357938437, 105.24105702588515], 28);
 
@@ -210,7 +208,7 @@
         console.log(absen === 'masuk' || absen === 'pulang');
         
         if ((absen === 'masuk' || absen === 'pulang') && nisn === trueNisn) {
-            console.log('harusnya running ajax')
+            //console.log('harusnya running ajax')
             let dataAbsen = {
                 _token: "{{ csrf_token() }}",
                 nisn: nisn,
@@ -236,17 +234,7 @@
                             text: status[1],
                             icon: 'success'
                         });
-                        setTimeout(() => location.href = '/dashboard', 10000);
-                    } else {
-                        if (status[2] == 'radius') {
-                            radius_sound.play();
-                        }
-                        Swal.fire({
-                            title: 'Error !',
-                            text: status[1],
-                            icon: 'error'
-                        });
-                        setTimeout(() => location.href = '/dashboard', 10000);
+                        setTimeout(() => location.href = '/dashboard', 15000);
                     }
                 },
                 error: function() {

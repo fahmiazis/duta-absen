@@ -11,7 +11,7 @@ function selisih($jam_masuk, $jam_keluar)
     $sisamenit = ($totalmenit / 60) - $jam[0];
     $sisamenit2 = $sisamenit * 60;
     $jml_jam = $jam[0];
-    return $jml_jam . ":" . round($sisamenit2);
+    return $jml_jam . " Jam : " . round($sisamenit2) . " Menit";
 }
 ?>
 @foreach ($presensi as $d)
@@ -24,11 +24,11 @@ function selisih($jam_masuk, $jam_keluar)
         <td>{{ $d->jam_in }}</td>
         <td>{!! $d->jam_out != null ? $d->jam_out : '<span class="badge bg-danger">Belum Absen</span>' !!}</td>
         <td>
-            @if($d->jam_in >= '07:00')
+            @if($d->jam_in >= $jamMasuk)
                 @php
-                    $jamterlambat = selisih('07:00:00', $d->jam_in);
+                    $jamterlambat = selisih($jamMasuk, $d->jam_in);
                 @endphp
-                <span class="badge bg-danger">Terlambat {{ $jamterlambat }}</span>
+                <span class="badge bg-danger">Terlambat<br>{{ $jamterlambat }}</span>
             @else
                 <span class="badge bg-success">Tepat Waktu</span>
             @endif

@@ -8,15 +8,15 @@ use Illuminate\Support\Facades\Redirect;
 
 class KonfigurasiController extends Controller
 {
-    public function lokasikantor()
+    public function lokasisekolah()
     {
         $lok_kantor = DB::table('konfigurasi_lokasi')->where('id',1)->first();
-        return view('konfigurasi.lokasikantor',compact('lok_kantor'));
+        return view('konfigurasi.lokasisekolah',compact('lok_kantor'));
     }
 
     public function updatelokasikantor (Request $request)
     {
-        $lokasi_kantor = $request->lokasi_kantor;
+        $lokasi_sekolah = $request->lokasi_sekolah;
         $radius = $request->radius;
 
         // Cek apakah data dengan id = 1 sudah ada
@@ -27,7 +27,7 @@ class KonfigurasiController extends Controller
             $update = DB::table('konfigurasi_lokasi')
                 ->where('id', 1)
                 ->update([
-                    'lokasi_kantor' => $lokasi_kantor,
+                    'lokasi_sekolah' => $lokasi_sekolah,
                     'radius' => $radius
                 ]);
             
@@ -40,7 +40,7 @@ class KonfigurasiController extends Controller
             // Jika data belum ada, insert
             $insert = DB::table('konfigurasi_lokasi')->insert([
                 'id' => 1, // pastikan jika kamu ingin set id 1 secara manual
-                'lokasi_kantor' => $lokasi_kantor,
+                'lokasi_sekolah' => $lokasi_sekolah,
                 'radius' => $radius
             ]);
         

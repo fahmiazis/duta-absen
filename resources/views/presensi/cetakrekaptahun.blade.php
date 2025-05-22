@@ -226,7 +226,7 @@ use Carbon\Carbon;
         @endphp
 
         @foreach ($rekapganjil as $d)
-            <td>{{ $no++ }}</td>    
+            <td style='text-align: center;'>{{ $no++ }}</td>    
             <td>{{ $d->nisn }}</td>
             <td>{{ $d->nama_lengkap }}</td>
             <?php
@@ -362,10 +362,10 @@ use Carbon\Carbon;
             }
             ?>
 
-            <td><?= $totalHadirGanjil ?></td>
-            <td><?= $totalAlfaGanjil ?></td>
-            <td><?= $totalIzinGanjil ?></td>
-            <td><?= $totalSakitGanjil ?></td>
+            <td style='text-align: center;'><?= $totalHadirGanjil ?></td>
+            <td style='text-align: center;'><?= $totalAlfaGanjil ?></td>
+            <td style='text-align: center;'><?= $totalIzinGanjil ?></td>
+            <td style='text-align: center;'><?= $totalSakitGanjil ?></td>
         @endforeach
 
         @foreach ($rekapgenap as $d)
@@ -495,16 +495,16 @@ use Carbon\Carbon;
             }
             ?>
 
-            <td><?= $totalHadirGenap ?></td>
-            <td><?= $totalAlfaGenap ?></td>
-            <td><?= $totalIzinGenap ?></td>
-            <td><?= $totalSakitGenap ?></td>
+            <td style='text-align: center;'><?= $totalHadirGenap ?></td>
+            <td style='text-align: center;'><?= $totalAlfaGenap ?></td>
+            <td style='text-align: center;'><?= $totalIzinGenap ?></td>
+            <td style='text-align: center;'><?= $totalSakitGenap ?></td>
         @endforeach
 
-            <td><?= $totalHadirGanjil + $totalHadirGenap ?></td>
-            <td><?= $totalAlfaGanjil + $totalAlfaGenap ?></td>
-            <td><?= $totalIzinGanjil + $totalIzinGenap ?></td>
-            <td><?= $totalSakitGanjil + $totalSakitGenap ?></td>
+            <td style='text-align: center;'><?= $totalHadirGanjil + $totalHadirGenap ?></td>
+            <td style='text-align: center;'><?= $totalAlfaGanjil + $totalAlfaGenap ?></td>
+            <td style='text-align: center;'><?= $totalIzinGanjil + $totalIzinGenap ?></td>
+            <td style='text-align: center;'><?= $totalSakitGanjil + $totalSakitGenap ?></td>
             <td></td>
         </tr>
     </table>

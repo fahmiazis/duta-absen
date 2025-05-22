@@ -205,13 +205,14 @@
             });
             */
             Swal.fire({
-                title: "Apakah Anda Yakin Data ini Mau Di Hapus?",
+                title: "Apakah Anda Yakin Data ini Ingin Di Hapus?",
                 text: "Jika Ya Maka Data Akan Terhapus Permanen",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, Hapus Saja"
+                confirmButtonText: "Ya, Hapus Saja",
+                cancelButtonText: "Batalkan"
             }).then((result) => {
                 if (result.isConfirmed) {
                     form.submit();

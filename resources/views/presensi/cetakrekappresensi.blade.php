@@ -347,10 +347,10 @@ use Carbon\Carbon;
                 foreach ($namaBulanGanjil as $bulanAngka => $namaBulan) {
                     echo "<tr>
                             <td>{$namaBulan}</td>
-                            <td>{$rekapBulan[$bulanAngka]['sakit']}</td>
-                            <td>{$rekapBulan[$bulanAngka]['izin']}</td>
-                            <td>{$rekapBulan[$bulanAngka]['alfa']}</td>
-                            <td>{$rekapBulan[$bulanAngka]['bolos']}</td>
+                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['sakit']}</td>
+                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['izin']}</td>
+                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['alfa']}</td>
+                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['bolos']}</td>
                           </tr>";
                 }
             ?>
@@ -359,10 +359,10 @@ use Carbon\Carbon;
 
             <tr>
                 <td colspan="2">JUMLAH</td>
-                <td><?= $totalSakitGanjil ?></td>
-                <td><?= $totalIzinGanjil ?></td>
-                <td><?= $totalAlfaGanjil ?></td>
-                <td><?= $totalBolosGanjil ?></td>
+                <td style='text-align: center;'><?= $totalSakitGanjil ?></td>
+                <td style='text-align: center;'><?= $totalIzinGanjil ?></td>
+                <td style='text-align: center;'><?= $totalAlfaGanjil ?></td>
+                <td style='text-align: center;'><?= $totalBolosGanjil ?></td>
             </tr>
 
 
@@ -515,10 +515,10 @@ use Carbon\Carbon;
                 foreach ($namaBulanGenap as $bulanAngka => $namaBulan) {
                     echo "<tr>
                             <td>{$namaBulan}</td>
-                            <td>{$rekapBulan[$bulanAngka]['sakit']}</td>
-                            <td>{$rekapBulan[$bulanAngka]['izin']}</td>
-                            <td>{$rekapBulan[$bulanAngka]['alfa']}</td>
-                            <td>{$rekapBulan[$bulanAngka]['bolos']}</td>
+                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['sakit']}</td>
+                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['izin']}</td>
+                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['alfa']}</td>
+                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['bolos']}</td>
                           </tr>";
                 }
             ?>
@@ -527,10 +527,10 @@ use Carbon\Carbon;
 
             <tr>
                 <td colspan="2">JUMLAH</td>
-                <td><?= $totalSakitGenap ?></td>
-                <td><?= $totalIzinGenap ?></td>
-                <td><?= $totalAlfaGenap ?></td>
-                <td><?= $totalBolosGenap ?></td>
+                <td style='text-align: center;'><?= $totalSakitGenap ?></td>
+                <td style='text-align: center;'><?= $totalIzinGenap ?></td>
+                <td style='text-align: center;'><?= $totalAlfaGenap ?></td>
+                <td style='text-align: center;'><?= $totalBolosGenap ?></td>
             </tr>
     </table>
     

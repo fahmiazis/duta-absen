@@ -58,7 +58,7 @@ class PresensiController extends Controller
 
         // Ambil lokasi kantor dari database
         $lok_kantor = DB::table('konfigurasi_lokasi')->where('id',1)->first();
-        $lok = explode(",", $lok_kantor->lokasi_kantor);
+        $lok = explode(",", $lok_kantor->lokasi_sekolah);
         $latitudekantor = $lok[0];
         $longitudekantor = $lok[1];
         $radius = $lok_kantor->radius; // dalam meter
@@ -104,7 +104,7 @@ class PresensiController extends Controller
         $lok_kantor = DB::table('konfigurasi_lokasi')->where('id',1)->first();
         $radius_sekolah = DB::table('konfigurasi_lokasi')->where('id', 1)->value('radius');
         //dd($radius_sekolah);
-        $lok = explode(",",$lok_kantor->lokasi_kantor);
+        $lok = explode(",",$lok_kantor->lokasi_sekolah);
         $latitudekantor = $lok[0];
         //dd($latitudekantor);
         $longitudekantor = $lok[1];
@@ -139,7 +139,7 @@ class PresensiController extends Controller
                         // Kirim notifikasi WhatsApp untuk presensi masuk
                         //dd($this->sendWhatsAppNotification($noHpOrangTua, "Lemak Anda telah hadir di sekolah pada {$jam}. Selamat belajar!"));
                         $this->sendWhatsAppNotification($noHpOrangTua, "Lemak Anda telah hadir di sekolah pada {$jam}. Selamat belajar!");
-                        echo "success|Terimakasi, Selamat Belajar Di Kelas|in";
+                        echo "success|Terima Kasih, Selamat Belajar Di Kelas|in";
                     } else {
                         echo "error|Maaf Gagal Absen, Hubungi Petugas IT Sekolah|in";
                     }                    
@@ -169,7 +169,7 @@ class PresensiController extends Controller
                 if($update){
                     // Kirim notifikasi WhatsApp untuk presensi pulang
                     $this->sendWhatsAppNotification($noHpOrangTua, "Murid Anda telah pulang pada {$jam}. Terima kasih!");
-                    echo "success|Terimakasi, Hati Hati Di Jalan Pulang|out";
+                    echo "success|Terima Kasih, Hati Hati Di Jalan Pulang|out";
                 } else {
                     echo "error|Maaf Gagal Absen, Hubungi Petugas IT Sekolah|out";
                 }                 
@@ -359,6 +359,17 @@ class PresensiController extends Controller
 
     public function getpresensi(Request $request)
     {
+        // Ambil jam_masuk dari tabel jamsekolah
+        $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk');
+
+        // Jika tidak ada data jam_masuk, gunakan default "07:00"
+        $jamMasuk = $jamMasuk ?? '07:00';
+
+        $jamPulangAsli = DB::table('jamsekolah')->where('id', 1)->value('jam_pulang') ?? '16:00';
+
+        // Tambahkan 5 menit toleransi
+        $jamPulangBatas = Carbon::parse($jamPulangAsli)->addMinutes(5)->format('H:i:s');
+
         $tanggal = $request->tanggal;
         $presensi = DB::table('presensi')
             ->select('presensi.*','nama_lengkap','nama_jurusan', 'murid.kelas')
@@ -367,7 +378,7 @@ class PresensiController extends Controller
             ->where('tgl_presensi',$tanggal)
             ->get();
 
-        return view('presensi.getpresensi', compact('presensi'));
+        return view('presensi.getpresensi', compact('presensi', 'jamMasuk', 'jamPulangAsli', 'jamPulangBatas'));
     }
 
     public function tampilkanpeta(Request $request)
@@ -381,7 +392,7 @@ class PresensiController extends Controller
         return view('presensi.showmap', compact('presensi'));
     }
 
-    public function laporan()
+    public function rekappresensi()
     {
         $namabulan = ["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
         $murid = DB::table('murid')
@@ -394,10 +405,10 @@ class PresensiController extends Controller
         // Ambil semua jurusan
         $jurusan = Jurusan::all();
 
-        return view('presensi.laporan', compact('namabulan','murid','kelas', 'jurusan'));
+        return view('presensi.rekappresensi', compact('namabulan','murid','kelas', 'jurusan'));
     }
 
-    public function cetaklaporan(Request $request)
+    public function cetakrekappresensi(Request $request)
     {
         $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk');
 
@@ -528,10 +539,10 @@ class PresensiController extends Controller
             ->groupBy('murid.nisn', 'nama_lengkap')
             ->get();
 
-        return view('presensi.cetaklaporan', compact('bulan','tahun','namabulan','murid','rekapganjil', 'rekapgenap','bulanAwal', 'bulanAkhir', 'jamMasuk', 'jamPulangAsli', 'jamPulangBatas'));
+        return view('presensi.cetakrekappresensi', compact('bulan','tahun','namabulan','murid','rekapganjil', 'rekapgenap','bulanAwal', 'bulanAkhir', 'jamMasuk', 'jamPulangAsli', 'jamPulangBatas'));
     }
 
-    public function rekap()
+    public function rekapbulan()
     {
         $namabulan = ["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
 
@@ -541,10 +552,10 @@ class PresensiController extends Controller
         // Ambil semua kelas unik dari murid
         $kelas = Murid::select('kelas')->distinct()->orderBy('kelas')->get();
 
-        return view('presensi.rekap', compact('namabulan', 'jurusan', 'kelas'));
+        return view('presensi.rekapbulan', compact('namabulan', 'jurusan', 'kelas'));
     }
 
-    public function cetakrekap(Request $request)
+    public function cetakrekapbulan(Request $request)
     {
         $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk');
 
@@ -612,7 +623,7 @@ class PresensiController extends Controller
             ->groupBy('murid.nisn', 'nama_lengkap', 'murid.jenis_kelamin')
             ->get();
 
-            return view('presensi.cetakrekap', compact('jurusan', 'nama_jurusan','kelas','bulan','tahun','namabulan','rekap', 'jamMasuk', 'jamPulangAsli', 'jamPulangBatas'));
+            return view('presensi.cetakrekapbulan', compact('jurusan', 'nama_jurusan','kelas','bulan','tahun','namabulan','rekap', 'jamMasuk', 'jamPulangAsli', 'jamPulangBatas'));
     }
     
     public function rekapsemester()

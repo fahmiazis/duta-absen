@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 <head>
   <meta charset="utf-8">
-  <title>Rekap Presensi</title>
+  <title>Rekap Presensi Bulanan</title>
 
   <!-- Normalize or reset CSS with your favorite library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">

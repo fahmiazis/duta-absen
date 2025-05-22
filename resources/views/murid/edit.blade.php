@@ -7,7 +7,8 @@
                   <!-- Download SVG icon from http://tabler-icons.io/i/user -->
                   <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-barcode"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v-1a2 2 0 0 1 2 -2h2" /><path d="M4 17v1a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v1" /><path d="M16 20h2a2 2 0 0 0 2 -2v-1" /><path d="M5 11h1v2h-1z" /><path d="M10 11l0 2" /><path d="M14 11h1v2h-1z" /><path d="M19 11l0 2" /></svg>
                 </span>
-                <input type="text" readonly value="{{ $murid->nisn }}" id="nisn" class="form-control" name="nisn" placeholder="NISN">
+                <input type="hidden" name="nisn_lama" value="{{ $murid->nisn }}">
+                <input type="text" value="{{ $murid->nisn }}" id="nisn_baru" class="form-control" name="nisn_baru" placeholder="NISN">
               </div>
         </div>
     </div>
@@ -25,12 +26,23 @@
     <div class="row">
         <div class="col-12">
             <div class="input-icon mb-3">
-                <span class="input-icon-addon">
-                  <!-- Download SVG icon from http://tabler-icons.io/i/user -->
-                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-device-analytics"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 4m0 1a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z" /><path d="M7 20l10 0" /><path d="M9 16l0 4" /><path d="M15 16l0 4" /><path d="M8 12l3 -3l2 2l3 -3" /></svg>
-                </span>
-                <input type="text" value="{{ $murid->kelas}}" id="kelas" class="form-control" name="kelas" placeholder="Kelas">
+                <select name="kelas" id="kelas" class="form-select">
+                    <option value="">Pilih Kelas</option>
+                    <option value="X" {{ $murid->kelas === 'X' ? 'selected' : '' }}>Kelas X</option>
+                    <option value="XI" {{ $murid->kelas === 'XI' ? 'selected' : '' }}>Kelas XI</option>
+                    <option value="XII" {{ $murid->kelas === 'XII' ? 'selected' : '' }}>Kelas XII</option>
+                </select>
               </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-3">
+            <select name="kode_jurusan" id="kode_jurusan" class="form-select">
+                <option value="">Jurusan</option>
+                @foreach ($jurusan as $d)
+                    <option {{ $murid->kode_jurusan ==$d->kode_jurusan ? 'selected' : '' }} value="{{ $d->kode_jurusan }}">{{ $d->nama_jurusan }}</option>
+                @endforeach
+            </select>
         </div>
     </div>
     <div class="row">
@@ -44,23 +56,13 @@
               </div>
         </div>
     </div>
-    <div class="row mt-2">
-        <div class="col-12">
+    <div class="row">
+        <div class="col-12 mb-3">
             <input type="file" name="foto" class="form-control">
             <input type="hidden" name="old_foto" value="{{ $murid->foto }}">
         </div>
     </div>
-    <div class="row mt-2">
-        <div class="col-12">
-            <select name="kode_jurusan" id="kode_jurusan" class="form-select">
-                <option value="">Jurusan</option>
-                @foreach ($jurusan as $d)
-                    <option {{ $murid->kode_jurusan ==$d->kode_jurusan ? 'selected' : '' }} value="{{ $d->kode_jurusan }}">{{ $d->nama_jurusan }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-    <div class="row mt-2">
+    <div class="row">
         <div class="col-12">
             <div class="form-group">
                 <button class="btn btn-primary w-100">

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('konfigurasi_lokasi', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('lokasi_kantor');
+            $table->string('lokasi_sekolah');
             $table->smallInteger('radius');
             $table->timestamps();
         });
