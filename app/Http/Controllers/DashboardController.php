@@ -80,12 +80,22 @@ class DashboardController extends Controller
     public function dashboardadmin()
     {
         $hariini = date("Y-m-d");
+        // Ambil jam_masuk dari tabel jamsekolah
+        $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk');
+
+        // Jika tidak ada data jam_masuk, gunakan default "07:00"
+        $jamMasuk = $jamMasuk ?? '07:00';
+
+        $jamPulangAsli = DB::table('jamsekolah')->where('id', 1)->value('jam_pulang') ?? '16:00';
+
+        // Tambahkan 5 menit toleransi
+        $jamPulangBatas = Carbon::parse($jamPulangAsli)->addMinutes(5)->format('H:i:s');
         $rekappresensi = DB::table('presensi')
-            ->selectRaw('
-                SUM(IF(jam_in IS NOT NULL AND jam_out IS NOT NULL AND jam_out >= "16:00:00", 1, 0)) as jmlhadir,
-                SUM(IF(jam_in >= "07:30:00", 1, 0)) as jmlterlambat,
-                SUM(IF(jam_in IS NOT NULL AND (jam_out IS NULL OR jam_out > "16:05:00"), 1, 0)) as jmlbolos
-            ')
+            ->selectRaw("
+                SUM(IF(jam_in IS NOT NULL AND jam_out IS NOT NULL AND jam_out >= '$jamPulangAsli', 1, 0)) as jmlhadir,
+                SUM(IF(jam_in >= '$jamMasuk', 1, 0)) as jmlterlambat,
+                SUM(IF(jam_in IS NOT NULL AND (jam_out IS NULL OR jam_out > '$jamPulangBatas'), 1, 0)) as jmlbolos
+            ")
             ->where('tgl_presensi', $hariini)
             ->first();
 

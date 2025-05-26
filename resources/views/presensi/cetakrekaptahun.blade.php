@@ -210,26 +210,26 @@ use Carbon\Carbon;
             </th>
         </tr>
 
-        <tr>
         @php
             $no = 1;
-            $total_laki_laki = 0;
-            $total_perempuan = 0;
-            $totalHadirGenap = 0;
-            $totalAlfaGenap = 0;
-            $totalIzinGenap = 0;
-            $totalSakitGenap = 0;
-            $totalHadirGanjil = 0;
-            $totalAlfaGanjil = 0;
-            $totalIzinGanjil = 0;
-            $totalSakitGanjil = 0;
         @endphp
 
-        @foreach ($rekapganjil as $d)
+        @foreach ($rekaptahunan as $d)
+        <tr>
             <td style='text-align: center;'>{{ $no++ }}</td>    
             <td>{{ $d->nisn }}</td>
             <td>{{ $d->nama_lengkap }}</td>
             <?php
+                $total_laki_laki = 0;
+                $total_perempuan = 0;
+                $totalHadirGenap = 0;
+                $totalAlfaGenap = 0;
+                $totalIzinGenap = 0;
+                $totalSakitGenap = 0;
+                $totalHadirGanjil = 0;
+                $totalAlfaGanjil = 0;
+                $totalIzinGanjil = 0;
+                $totalSakitGanjil = 0;
                 $semester = 'ganjil'; // atau 'ganjil'
                 $bulanSemesterGanjil = [];
 
@@ -366,9 +366,9 @@ use Carbon\Carbon;
             <td style='text-align: center;'><?= $totalAlfaGanjil ?></td>
             <td style='text-align: center;'><?= $totalIzinGanjil ?></td>
             <td style='text-align: center;'><?= $totalSakitGanjil ?></td>
-        @endforeach
 
-        @foreach ($rekapgenap as $d)
+
+
             <?php
                 $semester = 'genap'; // atau 'ganjil'
                 $bulanSemesterGenap = [];
@@ -499,7 +499,6 @@ use Carbon\Carbon;
             <td style='text-align: center;'><?= $totalAlfaGenap ?></td>
             <td style='text-align: center;'><?= $totalIzinGenap ?></td>
             <td style='text-align: center;'><?= $totalSakitGenap ?></td>
-        @endforeach
 
             <td style='text-align: center;'><?= $totalHadirGanjil + $totalHadirGenap ?></td>
             <td style='text-align: center;'><?= $totalAlfaGanjil + $totalAlfaGenap ?></td>
@@ -507,6 +506,7 @@ use Carbon\Carbon;
             <td style='text-align: center;'><?= $totalSakitGanjil + $totalSakitGenap ?></td>
             <td></td>
         </tr>
+        @endforeach 
     </table>
 
     <table width="100%" style="margin-top: 50px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
