@@ -480,6 +480,7 @@ class PresensiController extends Controller
                 MAX(IF(DAY(tgl_presensi) = 30,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_30,
                 MAX(IF(DAY(tgl_presensi) = 31,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_31
             ')
+            ->where('murid.nisn', $nisn)
             ->where('murid.kode_jurusan', $jurusan)
             ->where('murid.kelas', $kelas)
             ->groupBy('murid.nisn', 'nama_lengkap')
@@ -534,6 +535,7 @@ class PresensiController extends Controller
                 MAX(IF(DAY(tgl_presensi) = 30,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_30,
                 MAX(IF(DAY(tgl_presensi) = 31,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_31
             ')
+            ->where('murid.nisn', $nisn)
             ->where('murid.kode_jurusan', $jurusan)
             ->where('murid.kelas', $kelas)
             ->groupBy('murid.nisn', 'nama_lengkap')

@@ -198,12 +198,19 @@ use Carbon\Carbon;
             <th>BOLOS</th>
         </tr>
 
+        @php
+            $totalSakitGanjil = 0;
+            $totalIzinGanjil = 0;
+            $totalAlfaGanjil = 0;
+            $totalBolosGanjil = 0;
+            $totalSakitGenap = 0;
+            $totalIzinGenap = 0;
+            $totalAlfaGenap = 0;
+            $totalBolosGenap = 0;
+        @endphp
+
         @foreach ($rekapganjil as $d)  
             <?php
-                $totalSakitGanjil = 0;
-                $totalIzinGanjil = 0;
-                $totalAlfaGanjil = 0;
-                $totalBolosGanjil = 0;
                 $semester = 'ganjil'; // atau 'ganjil'
                 $bulanSemesterGanjil = [];
 
@@ -368,10 +375,6 @@ use Carbon\Carbon;
 
         @foreach ($rekapgenap as $d)  
             <?php
-                $totalSakitGenap = 0;
-                $totalIzinGenap = 0;
-                $totalAlfaGenap = 0;
-                $totalBolosGenap = 0;
                 $semester = 'genap';
                 $bulanSemesterGenap = [];
 
@@ -501,7 +504,7 @@ use Carbon\Carbon;
             }
             ?>
             
-            <td rowspan="7">GANJIL</td>
+            <td rowspan="7">GENAP</td>
             <?php
                 $namaBulanGenap = [
                     1 => 'JANUARI',
