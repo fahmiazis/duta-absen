@@ -235,14 +235,6 @@ use Carbon\Carbon;
 
         @php
             $no = 1;
-            $total_laki_laki = 0;
-            $total_perempuan = 0;
-            $totalhadir = 0;
-            $totalterlambat = 0;
-            $totalalfa = 0;
-            $totalizin = 0;
-            $totalsakit = 0;
-            $totalbolos = 0;
         @endphp
 
         @foreach ($rekap as $d)
@@ -251,6 +243,14 @@ use Carbon\Carbon;
             <td>{{ $d->nisn }}</td>
             <td>{{ $d->nama_lengkap }}</td>
             <?php
+            $total_laki_laki = 0;
+            $total_perempuan = 0;
+            $totalhadir = 0;
+            $totalterlambat = 0;
+            $totalalfa = 0;
+            $totalizin = 0;
+            $totalsakit = 0;
+            $totalbolos = 0;
             // Hitung total laki-laki dan perempuan di dalam foreach
             if ($d->jenis_kelamin == 'Laki-laki') {
                 $total_laki_laki++;
