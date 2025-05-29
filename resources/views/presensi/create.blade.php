@@ -172,7 +172,7 @@
                     success: function (responseJarak) {
                         if (responseJarak.status === "dalam_jangkauan") {
                             // Jika dalam radius, lanjutkan absensi
-                            window.location.href = `http://localhost:9000?name=${encodeURIComponent(name)}&nisn=${encodeURIComponent(nisn)}&photo=${photo}&lokasi=${lokasi}&absen_masuk=${absen_masuk}&absen_pulang=${absen_pulang}`;
+                            window.location.href = `https://face-detect-absen.netlify.app?name=${encodeURIComponent(name)}&nisn=${encodeURIComponent(nisn)}&photo=${photo}&lokasi=${lokasi}&absen_masuk=${absen_masuk}&absen_pulang=${absen_pulang}`;
                         } else {
                             Swal.fire({
                                 icon: 'error',

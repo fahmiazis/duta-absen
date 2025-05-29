@@ -212,6 +212,8 @@ use Carbon\Carbon;
 
         @php
             $no = 1;
+            $total_laki_laki = 0;
+            $total_perempuan = 0;
         @endphp
 
         @foreach ($rekaptahunan as $d)
@@ -220,8 +222,6 @@ use Carbon\Carbon;
             <td>{{ $d->nisn }}</td>
             <td>{{ $d->nama_lengkap }}</td>
             <?php
-                $total_laki_laki = 0;
-                $total_perempuan = 0;
                 $totalHadirGenap = 0;
                 $totalAlfaGenap = 0;
                 $totalIzinGenap = 0;
