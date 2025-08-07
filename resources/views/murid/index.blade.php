@@ -43,9 +43,19 @@
                             <div class="col-12">
                                 <form action="/murid" method="GET">
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <div class="form-group">
                                                 <input type="text" class="form-control" name="nama_murid" id="nama_murid" placeholder="Nama Murid" value="{{ Request('nama_murid') }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="form-group">
+                                                <select name="kelas" id="kelas" class="form-select">
+                                                    <option value="">Kelas</option>
+                                                    <option value="X" {{ request('kelas') == 'X' ? 'selected' : '' }}>Kelas X</option>
+                                                    <option value="XI" {{ request('kelas') == 'XI' ? 'selected' : '' }}>Kelas XI</option>
+                                                    <option value="XII" {{ request('kelas') == 'XII' ? 'selected' : '' }}>Kelas XII</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-4">
@@ -93,7 +103,7 @@
                                         @endphp
                                         <tr>
                                             <td>{{ $loop->iteration + $murid->firstItem()-1 }}</td>
-                                            <td>{{ $d->nisn }}</td>
+                                            <td>{{ str_pad($d->nisn, 10, '0', STR_PAD_LEFT) }}</td>
                                             <td>{{ $d->nama_lengkap }}</td>
                                             <td>{{ $d->kelas }}</td>
                                             <td>{{ $d->jenis_kelamin }}</td>
@@ -108,10 +118,10 @@
                                             <td>{{ $d->nama_jurusan }}</td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a href="#" class="edit btn btn-info btn-sm" nisn="{{ $d->nisn }}" >
+                                                    <a href="#" class="edit btn btn-info btn-sm" data-nisn="{{ str_pad($d->nisn, 10, '0', STR_PAD_LEFT) }}" >
                                                         <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
                                                     </a>
-                                                    <form action="/murid/{{ $d->nisn }}/delete" style="margin-left: 5px;" method="POST">
+                                                    <form action="/murid/{{ str_pad($d->nisn, 10, '0', STR_PAD_LEFT) }}/delete" style="margin-left: 5px;" method="POST">
                                                         @csrf
                                                         <a class="btn btn-danger btn-sm delete-confirm" >
                                                             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007h16z" /><path d="M14 2a2 2 0 0 1 2 2a1 1 0 0 1 -1.993 .117l-.007 -.117h-4l-.007 .117a1 1 0 0 1 -1.993 -.117a2 2 0 0 1 1.85 -1.995l.15 -.005h4z" /></svg>
@@ -151,7 +161,7 @@
                                   <!-- Download SVG icon from http://tabler-icons.io/i/user -->
                                   <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-barcode"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v-1a2 2 0 0 1 2 -2h2" /><path d="M4 17v1a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v1" /><path d="M16 20h2a2 2 0 0 0 2 -2v-1" /><path d="M5 11h1v2h-1z" /><path d="M10 11l0 2" /><path d="M14 11h1v2h-1z" /><path d="M19 11l0 2" /></svg>
                                 </span>
-                                <input type="text" value="" id="nisn" class="form-control" name="nisn" placeholder="NISN">
+                                <input type="text" value="" id="nisn" class="form-control" name="nisn" placeholder="NISN" maxlength="10">
                             </div>
                         </div>
                     </div>
@@ -253,8 +263,9 @@
             $("#modal-inputmurid").modal("show");
         });
 
-        $(".edit").click(function(){
-            var nisn = $(this).attr('nisn');
+        $(".edit").click(function(){ 
+            var nisn = $(this).data('nisn');
+            console.log("NISN yang dikirim : ", nisn);
             $.ajax({
                 type:'POST',
                 url:'/murid/edit',
@@ -309,9 +320,10 @@
         $("#frmMurid").submit(function(){
             var nisn = $("#nisn").val();
             var nama_lengkap = $("#nama_lengkap").val();
+            var jenis_kelamin = $("#jenis_kelamin").val();
             var kelas = $("#kelas").val();
-            var no_hp = $("#no_hp").val();
             var kode_jurusan = $("frmMurid").find("#kode_jurusan").val();
+            var no_hp = $("#no_hp").val();
             if(nisn==""){
                 //alert('NISN Harus Diisi');
                 Swal.fire({
@@ -333,6 +345,16 @@
                       $("#nama_lengkap").focus();
                   });
                 return false;
+            } else if (jenis_kelamin==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Jenis Kelamin Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#jenis_kelamin").focus();
+                  });
+                return false;
             } else if (kelas==""){
                 Swal.fire({
                     title: 'Warning!',
@@ -341,6 +363,16 @@
                     confirmButtonText: 'OK'
                   }).then(()=> {
                       $("#kelas").focus();
+                  });
+                return false;
+            } else if (kode_jurusan==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Jurusan Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#kode_jurusan").focus();
                   });
                 return false;
             } else if (no_hp==""){

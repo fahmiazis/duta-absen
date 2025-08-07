@@ -64,9 +64,6 @@
                                     <div class="form-group">
                                         <select name="nisn" id="nisn" class="form-select">
                                             <option value="">Pilih Murid</option>
-                                            @foreach($murid as $d)
-                                            <option value="{{ $d->nisn }}">{{ $d->nama_lengkap }}</option>
-                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -88,4 +85,32 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#kelas, #kode_jurusan').on('change', function () {
+        var kelas = $('#kelas').val();
+        var kode_jurusan = $('#kode_jurusan').val();
+
+        if (kelas && kode_jurusan) {
+            $.ajax({
+                url: '/get-murid-by-kelas-jurusan',
+                type: 'GET',
+                data: {
+                    kelas: kelas,
+                    kode_jurusan: kode_jurusan
+                },
+                success: function (response) {
+                    $('#nisn').empty().append('<option value="">Pilih Murid</option>');
+                    if(response.length > 0){
+                        $.each(response, function (i, murid) {
+                            $('#nisn').append(`<option value="${murid.nisn}">${murid.nama_lengkap}</option>`);
+                        });
+                    }
+                }
+            });
+        } else {
+            $('#nisn').empty().append('<option value="">Pilih Murid</option>');
+        }
+    });
+</script>
 @endsection

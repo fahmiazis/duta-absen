@@ -84,9 +84,26 @@
     // Webcam.attach('.webcam-capture');
 
     var lokasi = document.getElementById('lokasi');
+    //if (navigator.geolocation) {
+    //    navigator.geolocation.getCurrentPosition(
+    //        successCallback,
+    //        function(error) {
+    //            console.warn("Gagal GPS, pakai dummy lokasi.");
+    //            // fallback manual
+    //            successCallback({
+    //                coords: {
+    //                    latitude: -5.390336,
+    //                    longitude: 105.2409856
+    //                }
+    //            });
+    //        }
+    //    );
+    //}
+
     if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     }
+
 
     function successCallback(position) {
         var lokasi_sekolah = "{{ $lok_kantor->lokasi_sekolah }}";
@@ -95,28 +112,29 @@
         var long_kantor = lok[1];
 
         // Lokasi Value Adalah Titik Lokasinya User
-        //lokasi.value = position.coords.latitude + "," + position.coords.longitude;
-        //lokasi.value = -5.390264357938437 + "," + 105.24105702588515;
-        lokasi.value = lat_kantor + "," + long_kantor;
+        lokasi.value = position.coords.latitude + "," + position.coords.longitude;
+        //lokasi.value = -5.7074060550542045 + "," + 105.58920064156884;
+        //lokasi.value = lat_kantor + "," + long_kantor;
 
-        //var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 28);
-        var map = L.map('map').setView([lat_kantor, long_kantor], 18);
-        //var map = L.map('map').setView([-5.390336, 105.2409856], 28);
+        var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 28);
+        //var map = L.map('map').setView([lat_kantor, long_kantor], 18);
+        //var map = L.map('map').setView([-5.7369646, 105.5909995], 28);
         //var map = L.map('map').setView([-5.390264357938437, 105.24105702588515], 28);
+        // lokasi SMKN 2 Kalianda
+        //var map = L.map('map').setView([-5.707728594878937, 105.58962202650785], 28);
 
         var radius = "{{ $lok_kantor->radius }}"
-
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        //var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-        //var marker = L.marker([-5.390336, 105.2409856]).addTo(map);
-        var marker = L.marker([lat_kantor, long_kantor]).addTo(map);
-        //var marker = L.marker([-5.390264357938437, 105.24105702588515]).addTo(map);
+        var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+        //var marker = L.marker([-5.7369646, 105.5909995]).addTo(map);
+        //var marker = L.marker([lat_kantor, long_kantor]).addTo(map);
+        //var marker = L.marker([-5.7074060550542045, 105.58920064156884]).addTo(map);
 
-        //var circle = L.circle([-5.390336, 105.59125199541869], {
+        //var circle = L.circle([-5.707728594878937, 105.58962202650785], {
         //var circle = L.circle([position.coords.latitude, position.coords.longitude], {
         var circle = L.circle([lat_kantor, long_kantor], {
             color: 'red',
@@ -127,7 +145,7 @@
     }
 
     function errorCallback() {
-        s
+        alert("Terjadi kesalahan");
     }
 
     $("#takeabsen").click(function(e) {
@@ -172,7 +190,7 @@
                     success: function (responseJarak) {
                         if (responseJarak.status === "dalam_jangkauan") {
                             // Jika dalam radius, lanjutkan absensi
-                            window.location.href = `https://face-detect-absen.netlify.app?name=${encodeURIComponent(name)}&nisn=${encodeURIComponent(nisn)}&photo=${photo}&lokasi=${lokasi}&absen_masuk=${absen_masuk}&absen_pulang=${absen_pulang}`;
+                            window.location.href = `https://facemuka-recog.netlify.app?name=${encodeURIComponent(name)}&nisn=${encodeURIComponent(nisn)}&photo=${photo}&lokasi=${lokasi}&absen_masuk=${absen_masuk}&absen_pulang=${absen_pulang}`;
                         } else {
                             Swal.fire({
                                 icon: 'error',

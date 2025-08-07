@@ -294,6 +294,7 @@ use Carbon\Carbon;
                                 $jam_out = $row['jam_out'];
                                 if (!empty($jam_in) && (empty($jam_out) || $jam_out > $jamPulangBatas)) {
                                     $isBolos = true;
+                                    $rekapBulan[$bulan]['alfa']++;
                                 }
                             }
                         }
@@ -458,6 +459,7 @@ use Carbon\Carbon;
                                 $jam_out = $row['jam_out'];
                                 if (!empty($jam_in) && (empty($jam_out) || $jam_out > $jamPulangBatas)) {
                                     $isBolos = true;
+                                    $rekapBulan[$bulan]['alfa']++;
                                 }
                             }
                         }
@@ -486,7 +488,7 @@ use Carbon\Carbon;
                             $rekapBulan[$bulan]['hadir']++;
                         } elseif ($isHadir && !$isIzin && !$isSakit && $isBolos) {
                             $rekapBulan[$bulan]['bolos']++;
-                        } elseif (($hari != 'Sunday' && $hari != 'Minggu') && !$isLibur && !$isIzin && !$isSakit && !$isHadir) {
+                        } elseif (($hari != 'Sunday' && $hari != 'Minggu') && !$isLibur && !$isIzin && !$isSakit && !$isHadir && empty($d->$tgl)) {
                             $rekapBulan[$bulan]['alfa']++;
                         }                        
                     
@@ -540,7 +542,8 @@ use Carbon\Carbon;
     <table width="100%" style="margin-top: 50px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
         <tr>
             <td style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 0px 0px 100px; font-family: 'Times New Roman', Times, serif; font-size: 12px;">
-                Kepala SMK Negeri 2 Kalianda,<br><br><br><br><br><br><br>
+                Kepala Sekolah <br>
+                SMK Negeri 2 Kalianda,<br><br><br><br><br><br><br>
                 <u><b>NYOMAN MISTER, M.Pd</b></u><br>
                 Pembina<br>
                 NIP. 19680814 200012 1 002

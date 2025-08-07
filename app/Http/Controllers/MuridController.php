@@ -23,7 +23,10 @@ class MuridController extends Controller
         if(!empty($request->kode_jurusan)){
             $query->where('murid.kode_jurusan', $request->kode_jurusan);
         }
-        $murid = $query->paginate(10);
+        if(!empty($request->kelas)){
+            $query->where('murid.kelas', $request->kelas);
+        }
+        $murid = $query->paginate(40);
         $jurusan = DB::table('jurusan')->get();
         
         return view('murid.index', compact('murid','jurusan'));
@@ -86,47 +89,57 @@ class MuridController extends Controller
     {
         $nisn_lama = $request->nisn_lama; // dari hidden input
         $nisn_baru = $request->nisn_baru; // dari form editable
-
+    
         $nama_lengkap = $request->nama_lengkap;
         $kelas = $request->kelas;
         $no_hp = $request->no_hp;
         $kode_jurusan = $request->kode_jurusan;
         $password = Hash::make('12345');
         $old_foto = $request->old_foto;
-
+    
+        // Cek jika nisn baru sudah ada tapi bukan milik data yang sedang diedit
+        $cek = DB::table('murid')
+            ->where('nisn', $nisn_baru)
+            ->where('nisn', '<>', $nisn_lama)
+            ->exists();
+    
+        if ($cek) {
+            return Redirect::back()->with(['error' => 'NISN sudah digunakan oleh murid lain']);
+        }
+    
         if($request->hasFile('foto')){
-            $foto = $nisn_baru.".".$request
-                ->file('foto')
-                ->getClientOriginalExtension();
+            $foto = $nisn_baru.".".$request->file('foto')->getClientOriginalExtension();
         } else {
             $foto = $old_foto;
         }
-
+    
         try {
             $data = [
                 'nisn' => $nisn_baru,
-                'nama_lengkap'=>$nama_lengkap,
-                'kelas'=>$kelas,
-                'no_hp'=>$no_hp,
-                'foto'=>$foto,
-                'kode_jurusan'=>$kode_jurusan,
-                'password'=>$password
+                'nama_lengkap' => $nama_lengkap,
+                'kelas' => $kelas,
+                'no_hp' => $no_hp,
+                'foto' => $foto,
+                'kode_jurusan' => $kode_jurusan,
+                'password' => $password
             ];
-            $update = DB::table('murid')->where('nisn', $nisn)->update($data);
-            if ($update){
+        
+            $update = DB::table('murid')->where('nisn', $nisn_lama)->update($data);
+        
+            if ($update) {
                 if($request->hasFile('foto')){
                     $folderpath = "public/uploads/murid/";
-                    $folderpathold = "public/uploads/murid/" . $old_foto;
+                    $folderpathold = $folderpath . $old_foto;
                     Storage::delete($folderpathold);
-                    $request
-                        ->file('foto')
-                        ->storeAs($folderpath, $foto);
+                    $request->file('foto')->storeAs($folderpath, $foto);
                 }
+            
                 return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
+            } else {
+                return Redirect::back()->with(['error' => 'Data Gagal Diupdate (data tidak ditemukan)']);
             }
         } catch (\Exception $e) {
             dd($e);
-            //return Redirect::back()->with(['error' => 'Data Gagal Diupdate']);
         }
     }
 
@@ -138,5 +151,19 @@ class MuridController extends Controller
         } else {
             return Redirect::back()->with(['warning' => 'Data Berhasil Dihapus']);
         }
+    }
+
+    public function getMuridByKelasJurusan(Request $request)
+    {
+        $kelas = $request->kelas;
+        $kode_jurusan = $request->kode_jurusan;
+    
+        $murid = DB::table('murid')
+            ->where('kelas', $kelas)
+            ->where('kode_jurusan', $kode_jurusan)
+            ->orderBy('nama_lengkap')
+            ->get(['nisn', 'nama_lengkap']);
+    
+        return response()->json($murid);
     }
 }

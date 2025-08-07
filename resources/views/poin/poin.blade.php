@@ -37,15 +37,27 @@
                                                 <input type="text" value="{{ Request('nama_lengkap') }}" id="nama_lengkap" class="form-control" name="nama_lengkap" placeholder="Nama Murid">
                                             </div>
                                         </div>
-                                        <div class="col-4">
-                                            <div class="input-icon mb-3">
-                                                <span class="input-icon-addon">
-                                                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-barcode"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v-1a2 2 0 0 1 2 -2h2" /><path d="M4 17v1a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v1" /><path d="M16 20h2a2 2 0 0 0 2 -2v-1" /><path d="M5 11h1v2h-1z" /><path d="M10 11l0 2" /><path d="M14 11h1v2h-1z" /><path d="M19 11l0 2" /></svg>
-                                                </span>
-                                                <input type="text" value="{{ Request('nisn') }}" id="nisn" class="form-control" name="nisn" placeholder="NISN">
+                                        <div class="col-2">
+                                            <div class="form-group">
+                                                <select name="kelas" id="kelas" class="form-select">
+                                                    <option value="">Kelas</option>
+                                                    <option value="X" {{ request('kelas') == 'X' ? 'selected' : '' }}>Kelas X</option>
+                                                    <option value="XI" {{ request('kelas') == 'XI' ? 'selected' : '' }}>Kelas XI</option>
+                                                    <option value="XII" {{ request('kelas') == 'XII' ? 'selected' : '' }}>Kelas XII</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-4">
+                                            <div class="form-group">
+                                                <select name="kode_jurusan" id="kode_jurusan" class="form-select">
+                                                    <option value="">Jurusan</option>
+                                                    @foreach ($jurusan as $d)
+                                                        <option {{ Request('kode_jurusan')==$d->kode_jurusan ? 'selected' : '' }} value="{{ $d->kode_jurusan }}">{{ $d->nama_jurusan }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
                                             <div class="form-group">
                                                 <button class="btn btn-primary w-100" type="submit">
                                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-search"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
@@ -62,13 +74,14 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>No.</th>
-                                            <th>NISN</th>
-                                            <th>Nama</th>
-                                            <th>Jurusan</th>
-                                            <th>Foto</th>
-                                            <th>No. HP</th>
-                                            <th>Aksi</th>
+                                            <th style='text-align: center;'>No.</th>
+                                            <th style='text-align: center;'>NISN</th>
+                                            <th style='text-align: center;'>Nama</th>
+                                            <th style='text-align: center;'>Kelas</th>
+                                            <th style='text-align: center;'>Jurusan</th>
+                                            <th style='text-align: center;'>Foto</th>
+                                            <th style='text-align: center;'>No. HP</th>
+                                            <th style='text-align: center;'>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -77,11 +90,12 @@
                                             $path = Storage::url('uploads/murid/'.$d->foto);
                                         @endphp
                                         <tr>
-                                            <td>{{ $loop->iteration + $murid->firstItem()-1 }}</td>
-                                            <td>{{ $d->nisn }}</td>
+                                            <td style='text-align: center;'>{{ $loop->iteration + $murid->firstItem()-1 }}</td>
+                                            <td>{{ str_pad($d->nisn, 10, '0', STR_PAD_LEFT) }}</td>
                                             <td>{{ $d->nama_lengkap }}</td>
+                                            <td style='text-align: center;'>{{ $d->kelas }}</td>
                                             <td>{{ $d->nama_jurusan }}</td>
-                                            <td>
+                                            <td style='text-align: center;'>
                                                 @if (empty($d->foto))
                                                 <img src="{{ asset('assets/img/nophoto.jpg') }}" class="avatar" alt="">
                                                 @else
@@ -89,9 +103,9 @@
                                                 @endif
                                             </td>
                                             <td>{{ $d->no_hp }}</td>
-                                            <td>
+                                            <td style='text-align: center;'>
                                                 <div class="btn-group">
-                                                    <a href="/poin/{{ $d->nisn }}/riwayatpelanggaran" class="btn btn-info btn-sm">
+                                                    <a href="/poin/{{ str_pad($d->nisn, 10, '0', STR_PAD_LEFT) }}/riwayatpelanggaran" class="btn btn-info btn-sm">
                                                         <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
                                                         Riwayat Pelanggaran
                                                     </a>

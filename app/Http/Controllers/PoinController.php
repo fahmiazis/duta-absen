@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Murid;
+use App\Models\Jurusan;
 use App\Models\RiwayatPelanggaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,27 +14,22 @@ class PoinController extends Controller
     public function index(Request $request)
     {
         $query = Murid::query();
-        $query->select('murid.*', 'nama_jurusan');
-        $query->join('jurusan', 'murid.kode_jurusan', '=', 'jurusan.kode_jurusan');
+        $query->select('murid.*','nama_jurusan');
+        $query->join('jurusan','murid.kode_jurusan','=','jurusan.kode_jurusan');
         $query->orderBy('nama_lengkap');
-
-        if (!empty($request->nama_lengkap)) {
-            $query->where('nama_lengkap', 'like', '%' . $request->nama_lengkap . '%');
+        if(!empty($request->nama_lengkap)){
+            $query->where('nama_lengkap','like','%'.$request->nama_lengkap . '%');
         }
-    
-        if (!empty($request->nisn)) {
-            if (!empty($request->nama_lengkap)) {
-                // Jika keduanya diisi, cari dengan keduanya
-                $query->where('nisn', $request->nisn);
-            } else {
-                // Jika hanya NISN diisi, cari hanya dengan NISN
-                $query->where('nisn', $request->nisn);
-            }
+        if(!empty($request->kode_jurusan)){
+            $query->where('murid.kode_jurusan', $request->kode_jurusan);
         }
+        if(!empty($request->kelas)){
+            $query->where('murid.kelas', $request->kelas);
+        }
+        $murid = $query->paginate(50);
+        $jurusan = DB::table('jurusan')->get();
 
-        $murid = $query->paginate(5);
-
-        return view('poin.poin', compact('murid'));
+        return view('poin.poin', compact('murid', 'jurusan'));
     }
 
     
@@ -43,13 +39,16 @@ class PoinController extends Controller
         $query->select('murid.*','nama_jurusan');
         $query->join('jurusan','murid.kode_jurusan','=','jurusan.kode_jurusan');
         $query->orderBy('nama_lengkap');
-        if(!empty($request->nama_murid)){
-            $query->where('nama_lengkap','like','%'.$request->nama_murid . '%');
+        if(!empty($request->nama_lengkap)){
+            $query->where('nama_lengkap','like','%'.$request->nama_lengkap . '%');
         }
         if(!empty($request->kode_jurusan)){
             $query->where('murid.kode_jurusan', $request->kode_jurusan);
         }
-        $murid = $query->paginate(10);
+        if(!empty($request->kelas)){
+            $query->where('murid.kelas', $request->kelas);
+        }
+        $murid = $query->paginate(50);
         $jurusan = DB::table('jurusan')->get();
         
         return view('poin.poin', compact('murid','jurusan'));

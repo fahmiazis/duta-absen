@@ -10,6 +10,8 @@ use App\Http\Controllers\PresensiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GambarController;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\File;
+use App\Http\Controllers\ChartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,6 +79,7 @@ Route::middleware(['auth:user'])->group(function(){
     Route::post('/murid/edit',[MuridController::class,'edit']);
     Route::post('/murid/{nisn}/update',[MuridController::class,'update']);
     Route::post('/murid/{nisn}/delete',[MuridController::class,'delete']);
+    Route::get('/get-murid-by-kelas-jurusan', [MuridController::class, 'getMuridByKelasJurusan']);
 
     //Jurusan
     Route::get('/jurusan',[JurusanController::class,'index']);
@@ -88,7 +91,8 @@ Route::middleware(['auth:user'])->group(function(){
     //Presensi
     Route::get('/presensi/monitoring',[PresensiController::class,'monitoring']);
     Route::post('/getpresensi',[PresensiController::class,'getpresensi']);
-    Route::post('/tampilkanpeta',[PresensiController::class,'tampilkanpeta']);
+    Route::post('/peta_jam_masuk',[PresensiController::class,'peta_jam_masuk']);
+    Route::post('/peta_jam_pulang',[PresensiController::class,'peta_jam_pulang']);
     Route::get('/presensi/rekappresensi',[PresensiController::class,'rekappresensi']);
     Route::post('/presensi/cetakrekappresensi',[PresensiController::class,'cetakrekappresensi']);
     Route::get('/presensi/rekapbulan',[PresensiController::class,'rekapbulan']);
@@ -104,7 +108,7 @@ Route::middleware(['auth:user'])->group(function(){
     //Poin Pelanggaran
     Route::get('/poin',[PoinController::class,'index']);
     Route::get('/poin/poin',[PoinController::class,'poin']);
-    Route::get('/poin/{nisn}/riwayatpelanggaran',[PoinController::class,'riwayatpelanggaran']);
+    Route::get('/poin/{nisn}/riwayatpelanggaran', [PoinController::class, 'riwayatpelanggaran']);
     Route::post('/poin/store',[PoinController::class,'store']);
     Route::post('/poin/{nisn}/editpoin/{id_riwayat}',[PoinController::class,'editpoin']);
     Route::post('/poin/{nisn}/updatepoin/{id_riwayat}',[PoinController::class,'updatepoin']);
@@ -129,4 +133,17 @@ Route::get('send-wa', function(){
     ]);
 
     dd(json_decode($response, true));
+});
+
+Route::get('/get-image/{filename}', function ($filename) {
+    $path = storage_path("app/public/uploads/murid/" . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    return response()->file($path, [
+        'Content-Type' => mime_content_type($path),
+        'Access-Control-Allow-Origin' => '*',
+    ]);
 });

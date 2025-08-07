@@ -1,3 +1,8 @@
+<?php
+require '../vendor/autoload.php';// Autoload semua library composer
+use Carbon\Carbon;
+\Carbon\Carbon::setLocale('id');
+?>
 @extends('layouts.presensi')
 @section('content')
 <!-- App Capsule -->
@@ -147,7 +152,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#profile" role="tab">
-                                Leaderboard
+                                Hari ini
                             </a>
                         </li>
                     </ul>
@@ -155,44 +160,82 @@
                 <div class="tab-content mt-2" style="margin-bottom:100px;">
                     <div class="tab-pane fade show active" id="home" role="tabpanel">
                         <ul class="listview image-listview">
-                            @foreach ($historibulanini as $d)
-                            <li>
-                                <div class="item">
-                                    <div class="icon-box bg-primary">
-                                        <ion-icon name="finger-print-outline"></ion-icon>
-                                    </div>
-                                    <div class="in">
+                            @php
+                                $no = 1;
+                            @endphp
+                            <style>
+                            th {
+                                    font-size: 13px;
+                                    text-align: center;
+                                }
+                            td {
+                                font-size: 13px;
+                                text-align: center;
+                            }
+                            </style>
+                            <table style="width: 100%;">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Hari / Tgl</th>
+                                    <th>Jam Masuk</th>
+                                    <th>Jam Pulang</th>
+                                </tr>
+                                @foreach ($historibulanini as $d)
+                                <tr>
+                                    <td>{{ $no++ }}</td>
+                                    <td>
+                                        <div>{{ \Carbon\Carbon::parse($d->tgl_presensi)->translatedFormat('l') }}</div>
                                         <div>{{ date("d-m-Y", strtotime($d->tgl_presensi)) }}</div>
+                                    </td>
+                                    <td>
                                         <span class="bagde {{ $d->jam_in < $jamMasuk ? 'bg-success' : 'bg-danger' }}">
                                             {{ $d->jam_in }}
                                         </span>
+                                    </td>
+                                    <td>
                                         <span class="badge {{ $d->jam_out != null && $d->jam_out >= $jamPulangAsli && $d->jam_out <= $jamPulangBatas ? 'bg-success' : 'bg-danger' }}">
                                             {{ $d->jam_out != null ? $d->jam_out : 'Belum Absen' }}
                                         </span>
-                                    </div>
-                                </div>
-                            </li>
-                            @endforeach
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </table>
                         </ul>
                     </div>
                     <div class="tab-pane fade" id="profile" role="tabpanel">
                         <ul class="listview image-listview">
-                            @foreach ($leaderboard as $d)
-                                <li>
-                                    <div class="item">
-                                        <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="image">
-                                        <div class="in">
-                                            <div>
-                                                <b>{{ $d->nama_lengkap }}</b><br>
-                                                <small class="text-muted">{{ $d->kelas }}</small>
-                                            </div>
-                                            <span class="bagde {{ $d->jam_in < $jamMasuk ? 'bg-success' : 'bg-danger' }}">
-                                                {{ $d->jam_in }}
-                                            </span>
+                            @php
+                                $no = 1;
+                            @endphp
+                            <style>
+                            th {
+                                    font-size: 13px;
+                                    text-align: center;
+                                }
+                            </style>
+                            <table style="width: 100%;">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Nama Murid</th>
+                                    <th>Jam Masuk</th>
+                                </tr>
+                                @foreach ($leaderboard as $d)
+                                <tr>
+                                    <td style="text-align: center; vertical-align: top; font-size: 13px;">{{ $no++ }}</td>
+                                    <td style="text-align: left; font-size: 13px;">
+                                        <div>
+                                            <b>{{ $d->nama_lengkap }}</b><br>
+                                            <small class="text-muted">{{ $d->kelas }} {{ $d->kode_jurusan }}</small>
                                         </div>
-                                    </div>
-                                </li>
-                            @endforeach
+                                    </td>
+                                    <td style="text-align: center; font-size: 13px;">
+                                        <span class="bagde {{ $d->jam_in < $jamMasuk ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $d->jam_in }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </table>
                         </ul>
                     </div>
 

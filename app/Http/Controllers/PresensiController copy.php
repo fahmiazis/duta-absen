@@ -138,7 +138,7 @@ class PresensiController extends Controller
                     if($simpan){
                         // Kirim notifikasi WhatsApp untuk presensi masuk
                         //dd($this->sendWhatsAppNotification($noHpOrangTua, "Lemak Anda telah hadir di sekolah pada {$jam}. Selamat belajar!"));
-                        $this->sendWhatsAppNotification($noHpOrangTua, "Anak Anda telah hadir di sekolah pada pukul {$jam}. Terima Kasih!");
+                        $this->sendWhatsAppNotification($noHpOrangTua, "Lemak Anda telah hadir di sekolah pada {$jam}. Selamat belajar!");
                         echo "success|Terima Kasih, Selamat Belajar Di Kelas|in";
                     } else {
                         echo "error|Maaf Gagal Absen, Hubungi Petugas IT Sekolah|in";
@@ -185,7 +185,7 @@ class PresensiController extends Controller
     function sendWhatsAppNotification($target, $message)
     {
         $response = Http::withHeaders([
-            'Authorization' => '2g56PZeupA8DcmPSMz2K', // Token API Fonnte Anda
+            'Authorization' => '8Xj94HfAUG6LakYdwfN5', // Token API Fonnte Anda
         ])->withOptions([
             'verify' => base_path('storage/app/cacert.pem'), // Lokasi file cacert.pem
         ])->post('https://api.fonnte.com/send', [
@@ -221,7 +221,7 @@ class PresensiController extends Controller
         $murid = DB::table('murid')
             ->where('nisn', $nisn)
             ->first();
-        // Ambil semua jurusan
+            
         $jurusan = Jurusan::all();
 
         return view('presensi.editprofile', compact('murid', 'jurusan'));
@@ -229,7 +229,9 @@ class PresensiController extends Controller
 
     public function updateprofile(Request $request)
     {
-        $nisn = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0',STR_PAD_LEFT);
+        $nisn = Auth::guard('murid')
+            ->user()
+            ->nisn;
 
         $nama_lengkap = $request
             ->nama_lengkap;
@@ -246,19 +248,10 @@ class PresensiController extends Controller
             ->where('nisn', $nisn)
             ->first();
 
-        $successUpdate = false;
-
         if($request->hasFile('foto')){
-            $folderpath = 'public/uploads/murid/';
-            $files = Storage::files($folderpath);
-            foreach ($files as $file) {
-                if (strpos($file, $nisn . '.') !== false) {
-                    Storage::delete($file);
-                }
-            }
-            $foto = $nisn . '.' . $request->file('foto')->getClientOriginalExtension();
-            $request->file('foto')->storeAs($folderpath, $foto);
-            $successUpdate = true;
+            $foto = $nisn.".".$request
+                ->file('foto')
+                ->getClientOriginalExtension();
         } else {
             $foto = $murid->foto;
         }
@@ -282,11 +275,17 @@ class PresensiController extends Controller
             ];
         }
 
-        $dbUpdate = DB::table('murid')
+        $update = DB::table('murid')
             ->where('nisn', $nisn)
             ->update($data);
 
-        if($dbUpdate || $successUpdate){
+        if($update){
+            if($request->hasFile('foto')){
+                $folderpath = "public/uploads/murid/";
+                $request
+                    ->file('foto')
+                    ->storeAs($folderpath, $foto);
+            }
             return Redirect::back()
                 ->with(['success' => 'Data Berhasil Di Update']);
         }else{
@@ -376,8 +375,7 @@ class PresensiController extends Controller
 
     public function monitoring()
     {
-        $jurusan = DB::table('jurusan')->get();
-        return view('presensi.monitoring', compact('jurusan'));
+        return view('presensi.monitoring');
     }
 
     public function getpresensi(Request $request)
@@ -386,52 +384,36 @@ class PresensiController extends Controller
         $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk');
 
         // Jika tidak ada data jam_masuk, gunakan default "07:00"
-        $jamMasuk = $jamMasuk ?? '07:00:00';
+        $jamMasuk = $jamMasuk ?? '07:00';
 
-        $jamPulangAsli = DB::table('jamsekolah')->where('id', 1)->value('jam_pulang') ?? '16:00:00';
+        $jamPulangAsli = DB::table('jamsekolah')->where('id', 1)->value('jam_pulang') ?? '16:00';
 
         // Tambahkan 5 menit toleransi
         $jamPulangBatas = Carbon::parse($jamPulangAsli)->addMinutes(5)->format('H:i:s');
         
         $tanggal = $request->tanggal;
-        if ($tanggal) {
-            try {
-                $tanggal = Carbon::parse($tanggal)->format('Y-m-d');
-            } catch (\Exception $e) {
-                $tanggal = null;
-            }
-        }
-        $nisn = trim($request->nisn) ?: null;
-        $nama_lengkap = trim($request->nama_lengkap) ?: null;
+        $nisn = $request->nisn;
+        $nama_lengkap = $request->nama_lengkap;
 
         $presensi = DB::table('presensi')
-            ->select(
-                'presensi.*',
-                'murid.nama_lengkap',
-                'murid.kelas',
-                'jurusan.nama_jurusan'
-            )
-            ->leftJoin('murid', 'presensi.nisn', '=', 'murid.nisn')
-            ->leftJoin('jurusan', 'murid.kode_jurusan', '=', 'jurusan.kode_jurusan')
-            ->when($request->tanggal, function ($query, $tanggal) {
+            ->select('presensi.*', 'murid.nama_lengkap', 'jurusan.nama_jurusan', 'murid.kelas')
+            ->join('murid', 'presensi.nisn', '=', 'murid.nisn')
+            ->join('jurusan', 'murid.kode_jurusan', '=', 'jurusan.kode_jurusan')
+            ->when($tanggal, function ($query) use ($tanggal) {
                 return $query->where('presensi.tgl_presensi', $tanggal);
             })
-            ->when($request->nama_lengkap, function ($query, $nama_lengkap) {
+            ->when($nisn, function ($query) use ($nisn) {
+                return $query->where('presensi.nisn', $nisn);
+            })
+            ->when($nama_lengkap, function ($query) use ($nama_lengkap) {
                 return $query->where('murid.nama_lengkap', 'like', '%' . $nama_lengkap . '%');
             })
-            ->when($request->kelas, function ($query, $kelas) {
-                return $query->where('murid.kelas', $kelas);
-            })
-            ->when($request->kode_jurusan, function ($query, $kode_jurusan) {
-                return $query->where('murid.kode_jurusan', $kode_jurusan);
-            })
-            ->orderBy('murid.nama_lengkap')
             ->get();
 
         return view('presensi.getpresensi', compact('presensi', 'jamMasuk', 'jamPulangAsli', 'jamPulangBatas'));
     }
 
-    public function peta_jam_masuk(Request $request)
+    public function tampilkanpeta(Request $request)
     {
         $id = $request->id;
         $presensi = DB::table('presensi')
@@ -439,18 +421,7 @@ class PresensiController extends Controller
             ->where('id', $id)
             ->first();
 
-        return view('presensi.showmap_jam_masuk', compact('presensi'));
-    }
-
-    public function peta_jam_pulang(Request $request)
-    {
-        $id = $request->id;
-        $presensi = DB::table('presensi')
-            ->join('murid','presensi.nisn','=','murid.nisn')
-            ->where('id', $id)
-            ->first();
-
-        return view('presensi.showmap_jam_pulang', compact('presensi'));
+        return view('presensi.showmap', compact('presensi'));
     }
 
     public function rekappresensi()
@@ -874,29 +845,25 @@ class PresensiController extends Controller
         if(!empty($request->dari) && !empty($request->sampai)){
             $query->whereBetween('tgl_izin',[$request->dari, $request->sampai]);
         }
+        if(!empty($request->nisn)){
+            $query->where('pengajuan_izin.nisn',$request->nisn);
+        }
         if(!empty($request->nama_lengkap)){
             $query->where('nama_lengkap','like','%'.$request->nama_lengkap.'%');
-        }
-        if(!empty($request->kelas)){
-            $query->where('murid.kelas', $request->kelas);
-        }
-        if(!empty($request->kode_jurusan)){
-            $query->where('murid.kode_jurusan', $request->kode_jurusan);
         }
         if($request->status_approved === '0' || $request->status_approved === '1' || $request->status_approved === '2'){
             $query->where('status_approved',$request->status_approved);
         }
         $query->orderBy('tgl_izin','desc');
-        $izinsakit = $query->paginate(50);
+        $izinsakit = $query->paginate(5);
         $izinsakit->appends($request->all());
-        $jurusan = Jurusan::all();
 
         //$izinsakit = DB::table('pengajuan_izin')
         //    ->join('murid','pengajuan_izin.nisn','=','murid.nisn')
         //    ->orderBy('tgl_izin','desc')
         //    ->get();
 
-        return view('presensi.izinsakit',compact('izinsakit', 'jurusan'));
+        return view('presensi.izinsakit',compact('izinsakit'));
     }
 
     public function approveizinsakit(Request $request)

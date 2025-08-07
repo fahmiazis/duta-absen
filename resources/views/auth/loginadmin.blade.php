@@ -13,7 +13,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Log In Admin - CMS</title>
+    <title>Aplikasi Monitoring Presensi dan Poin Pelanggaran Murid SMKN 2 Kalianda</title>
     <script defer data-api="/stats/api/event" data-domain="preview.tabler.io" src="/stats/js/script.js"></script>
     <meta name="msapplication-TileColor" content=""/>
     <meta name="theme-color" content=""/>
@@ -68,7 +68,10 @@
                         </div>
                         <div class="card card-md">
                             <div class="card-body">
-                                <h2 class="fs-1 fw-bolder text-center mb-0">Login Admin</h2>
+                                <div class="section" style="text-align: center;">
+                                    <img src="{{ asset('assets/img/login/smkn2kld.png') }}" alt="SMKN 2 Kalianda" style="width: 4cm; height: 5cm;">
+                                </div>
+                                <h2 class="fs-1 fw-bolder text-center mb-0">Aplikasi Monitoring Presensi dan Poin Pelanggaran Murid</h2>
                                 <p class="fs-4 text-secondary text-center">SMKN 2 Kalianda</p>
                                 @if (Session::get('warning'))
                                 <div class="alert alert-warning">
