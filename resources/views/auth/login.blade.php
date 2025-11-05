@@ -7,13 +7,13 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
-    <title>Aplikasi Absen SMKN 2 Kalianda</title>
-    <meta name="description" content="Aplikasi Absen Murid SMKN 2 Kalianda">
-    <meta name="keywords" content="absen, smk, sekolah, pendidikan" />
+    <title>Sistem Program Makanan Bergizi Kabupaten Lampung Timur</title>
+    <meta name="description" content="Sistem Program Makanan Bergizi Kabupaten Lampung Timur">
+    <meta name="keywords" content="mbg, program makanan bergizi, lampung timur" />
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}" sizes="32x32">
     <link rel="apple-touch-icon" sizes="180x180" href="{{asset('assets/img/icon/192x192.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="manifest" href="{{ asset('__manifest.json') }}">
+    <link rel="manifest" href="__manifest.json">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -98,7 +98,7 @@
         /* Media Query untuk membuat konten menyesuaikan dengan ukuran layar */
         @media (min-width: 1200px) and (max-width: 2160px) {
             .login-form {
-                max-width: 40%; /* adjust the width to your liking */
+                max-width: 30%; /* adjust the width to your liking */
                 margin: 0 auto; /* center the form horizontally */
             }
         }
@@ -128,14 +128,13 @@
     <div id="appCapsule" class="pt-0">
 
         <div class="login-form mt-5">
-            <div class="section mt-5 mb-5">
-                <img src="{{ asset('assets/img/login/smkn2kld.png') }}" alt="SMKN 2 Kalianda" class="form-image">
+            <div class="section mt-5 mb-3">
+                <img src="{{ asset('assets/img/login/login_distributor.png') }}" alt="Sistem Distribusi Program MBG" class="form-image">
             </div>
             <div class="section">
-                <h2>Aplikasi Absen Murid <br> SMK Negeri 2 Kalianda</h2>
-                <h4>Silahkan Login</h4>
+                <h3>Sistem Distributor Program MBG <br> Kabupaten Lampung Timur</h3>
             </div>
-            <div class="section mt-5 mb-5">
+            <div class="section mb-5">
                 @php
                 $messagewarning = Session::get('warning');
                 @endphp
@@ -149,7 +148,7 @@
                     @csrf
                     <div class="form-group boxed">
                         <div class="input-wrapper">
-                            <input type="text" name="nisn" class="form-control" id="nisn" placeholder="Masukkan NISN Anda" style="opacity: 0.5;">
+                            <input type="text" name="nisn" class="form-control" id="nisn" placeholder="Masukkan ID Anda" style="opacity: 0.5;">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>

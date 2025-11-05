@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('murid', function (Blueprint $table) {
             $table->char('nisn');
             $table->string('nama_lengkap');
-            $table->string('jenis_kelamin');
             $table->string('kelas');
             $table->string('no_hp');
             $table->string('foto');

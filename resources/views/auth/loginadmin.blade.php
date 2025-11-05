@@ -13,7 +13,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Aplikasi Monitoring Presensi dan Poin Pelanggaran Murid SMKN 2 Kalianda</title>
+    <title>Log In Admin - Program MBG Lampung Timur</title>
     <script defer data-api="/stats/api/event" data-domain="preview.tabler.io" src="/stats/js/script.js"></script>
     <meta name="msapplication-TileColor" content=""/>
     <meta name="theme-color" content=""/>
@@ -22,8 +22,8 @@
     <meta name="mobile-web-app-capable" content="yes"/>
     <meta name="HandheldFriendly" content="True"/>
     <meta name="MobileOptimized" content="320"/>
-    <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="{{ asset('assets/img/favicon.png') }}" type="image/x-icon"/>
+    <link rel="shortcut icon" href="{{ asset('assets/img/favicon.png') }}" type="image/x-icon"/>
     <meta name="description" content="Tabler comes with tons of well-designed components and features. Start your adventure with Tabler and make your dashboard great again. For free!"/>
     <meta name="canonical" content="https://preview.tabler.io/sign-in-illustration.html">
     <meta name="twitter:image:src" content="https://preview.tabler.io/static/og.png">
@@ -63,16 +63,13 @@
             <div class="row align-items-center g-4">
                 <div class="col-lg">
                     <div class="container-tight">
-                        <div class="text-center mb-4">
-                            <a href="." class="navbar-brand navbar-brand-autodark"><img src="../../assets/img/sample/photo/sikap.png" width="200" style="margin-top: -25px;" alt=""></a>
-                        </div>
                         <div class="card card-md">
                             <div class="card-body">
-                                <div class="section" style="text-align: center;">
-                                    <img src="{{ asset('assets/img/login/smkn2kld.png') }}" alt="SMKN 2 Kalianda" style="width: 4cm; height: 5cm;">
+                                <div class="section">
+                                    <img src="{{ asset('assets/img/owner/login/loginadmin.jpg') }}" alt="Sistem Admin Program MBG" class="form-image">
                                 </div>
-                                <h2 class="fs-1 fw-bolder text-center mb-0">Aplikasi Monitoring Presensi dan Poin Pelanggaran Murid</h2>
-                                <p class="fs-4 text-secondary text-center">SMKN 2 Kalianda</p>
+                                <h2 class="fs-1 fw-bolder text-center mb-0">Login Admin</h2>
+                                <p class="fs-4 text-secondary text-center">Sistem Program MBG <br> Kabupaten Lampung Timur</p>
                                 @if (Session::get('warning'))
                                 <div class="alert alert-warning">
                                     <p>{{ Session::get('warning') }}</p>
@@ -85,7 +82,7 @@
                                     </div>
                                     <div class="mb-2">
                                     <div class="input-group input-group-flat">
-                                        <input type="password" name='password' class="form-control"  placeholder="Password"  autocomplete="off">
+                                        <input type="password" name="password" class="form-control"  placeholder="Password"  autocomplete="off">
                                         <span class="input-group-text">
                                         <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
                                             <img src=""
@@ -97,6 +94,7 @@
                                     <button type="submit" class="rounded-2 w-100 fw-bold">LOGIN</button>
                                     </div>
                                 </form>
+                                <a href="{{ url('/') }}" class="btn btn-primary rounded-2 w-100 fw-bold" style="margin-top: 10px;">Kembali ke Halaman Utama</a>
                             </div>
                         </div>
                     </div>

@@ -17,7 +17,7 @@
             <div class="col-12">
                 <form action="/presensi/izinsakit" method="get" autocomplete="off">
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-6">
                             <div class="input-icon mb-3">
                                 <span class="input-icon-addon">
                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2z" /></svg>
@@ -25,7 +25,7 @@
                                 <input type="text" value="{{ Request('dari') }}" id="dari" class="form-control" name="dari" placeholder="Dari">
                             </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-6">
                             <div class="input-icon mb-3">
                                 <span class="input-icon-addon">
                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2z" /></svg>
@@ -33,18 +33,16 @@
                                 <input type="text" value="{{ Request('sampai') }}" id="sampai" class="form-control" name="sampai" placeholder="Sampai">
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <select name="status_approved" id="status_approved" class="form-select">
-                                    <option value="">Pilih Status</option>
-                                    <option value="0" {{ Request('status_approved') === '0' ? 'selected' : "" }}>Pending</option>
-                                    <option value="1" {{ Request('status_approved') == 1 ? 'selected' : "" }}>Disetujui</option>
-                                    <option value="2" {{ Request('status_approved') == 2 ? 'selected' : "" }}>Ditolak</option>
-                                </select>
-                            </div>
-                        </div>
                     </div>
                     <div class="row">
+                        <div class="col-3">
+                            <div class="input-icon mb-3">
+                                <span class="input-icon-addon">
+                                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-barcode"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v-1a2 2 0 0 1 2 -2h2" /><path d="M4 17v1a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v1" /><path d="M16 20h2a2 2 0 0 0 2 -2v-1" /><path d="M5 11h1v2h-1z" /><path d="M10 11l0 2" /><path d="M14 11h1v2h-1z" /><path d="M19 11l0 2" /></svg>
+                                </span>
+                                <input type="text" value="{{ Request('nisn') }}" id="nisn" class="form-control" name="nisn" placeholder="NISN">
+                            </div>
+                        </div>
                         <div class="col-3">
                             <div class="input-icon mb-3">
                                 <span class="input-icon-addon">
@@ -55,21 +53,11 @@
                         </div>
                         <div class="col-3">
                             <div class="form-group">
-                                <select name="kelas" id="kelas" class="form-select">
-                                    <option value="">Kelas</option>
-                                    <option value="X" {{ request('kelas') == 'X' ? 'selected' : '' }}>Kelas X</option>
-                                    <option value="XI" {{ request('kelas') == 'XI' ? 'selected' : '' }}>Kelas XI</option>
-                                    <option value="XII" {{ request('kelas') == 'XII' ? 'selected' : '' }}>Kelas XII</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="form-group">
-                                <select name="kode_jurusan" id="kode_jurusan" class="form-select">
-                                    <option value="">Jurusan</option>
-                                    @foreach ($jurusan as $d)
-                                        <option {{ Request('kode_jurusan')==$d->kode_jurusan ? 'selected' : '' }} value="{{ $d->kode_jurusan }}">{{ $d->nama_jurusan }}</option>
-                                    @endforeach
+                                <select name="status_approved" id="status_approved" class="form-select">
+                                    <option value="">Pilih Status</option>
+                                    <option value="0" {{ Request('status_approved') === '0' ? 'selected' : "" }}>Pending</option>
+                                    <option value="1" {{ Request('status_approved') == 1 ? 'selected' : "" }}>Disetujui</option>
+                                    <option value="2" {{ Request('status_approved') == 2 ? 'selected' : "" }}>Ditolak</option>
                                 </select>
                             </div>
                         </div>
@@ -90,41 +78,40 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th style='text-align: center;'>No.</th>
-                            <th style='text-align: center;'>Tanggal</th>
-                            <th style='text-align: center;'>NISN</th>
-                            <th style='text-align: center;'>Nama Murid</th>
-                            <th style='text-align: center;'>Kelas</th>
-                            <th style='text-align: center;'>Status</th>
-                            <th style='text-align: center;'>Keterangan</th>
-                            <th style='text-align: center;'>Status Persetujuan</th>
-                            <th style='text-align: center;'>Aksi</th>
+                            <th>No.</th>
+                            <th>Tanggal</th>
+                            <th>NISN</th>
+                            <th>Nama Murid</th>
+                            <th>Kelas</th>
+                            <th>Status</th>
+                            <th>Keterangan</th>
+                            <th>Status Approved</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($izinsakit as $d)
                         <tr>
-                            <td style='text-align: center;'>{{ $loop->iteration }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ date('d-m-Y',strtotime($d->tgl_izin)) }}</td>
                             <td>{{ $d->nisn }}</td>
                             <td>{{ $d->nama_lengkap }}</td>
-                            <td style='text-align: center;'>{{ $d->kelas }}</td>
-                            <td style='text-align: center;'>{{ $d->status == "i" ? "izin" : "Sakit" }}</td>
+                            <td>{{ $d->kelas }}</td>
+                            <td>{{ $d->status == "i" ? "izin" : "Sakit" }}</td>
                             <td>{{ $d->keterangan }}</td>
-                            <td style='text-align: center;'>
+                            <td>
                                 @if ($d->status_approved==1)
                                 <span class="badge bg-success">Disetujui</span>
                                 @elseif ($d->status_approved==2)
                                 <span class="badge bg-danger">Ditolak</span>
                                 @else
-                                <span class="badge bg-warning">Menunggu</span>
+                                <span class="badge bg-warning">Pending</span>
                                 @endif
                             </td>
-                            <td style='text-align: center;'>
+                            <td>
                                 @if ($d->status_approved==0)
-                                <a href="#" class="btn btn-sm btn-primary approved" id_izinsakit="{{ $d->id }}">
+                                <a href="#" class="btn btn-sm btn-primary" id="approved" id_izinsakit="{{ $d->id }}">
                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-external-link"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" /><path d="M11 13l9 -9" /><path d="M15 4h5v5" /></svg>
-                                    Edit
                                 </a>
                                 @else
                                 <a href="/presensi/{{ $d->id }}/batalkanizinsakit" class="btn btn-sm bg-danger">
@@ -147,7 +134,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Disetujui / Ditolak</h5>
+                <h5 class="modal-title">Izin / Sakit</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -184,7 +171,7 @@
 @push('myscript')
 <script>
     $(function(){
-        $(document).on("click", ".approved", function(e){
+        $("#approved").click(function(e){
             e.preventDefault();
             var id_izinsakit = $(this).attr("id_izinsakit");
             $("#id_izinsakit_form").val(id_izinsakit);
@@ -192,9 +179,9 @@
         });
 
         $("#dari, #sampai").datepicker({ 
-            autoclose: true, 
-            todayHighlight: true,
-            format: 'yyyy-mm-dd'
+        autoclose: true, 
+        todayHighlight: true,
+        format:'yyyy-mm-dd'
         });
     });
 </script>

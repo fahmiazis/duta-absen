@@ -17,7 +17,7 @@
             <ion-icon name="chevron-back-outline"></ion-icon>
         </a>
     </div>
-    <div class="pageTitle">Form Izin / Sakit Murid</div>
+    <div class="pageTitle">Form Izin</div>
     <div class="right"></div>
 </div>
 <!--- * App Header -->
